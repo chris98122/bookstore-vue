@@ -13,91 +13,94 @@
       >
 
         <v-data-table
-          v-model="selected"
           :headers="headers"
           :items="items"
+          v-model="selected"
           select-all
           item-key="name"
           class="elevation-1"
         >
-          <template
-            v-slot:headers="props"
-          ><tr>
-            <v-checkbox
-              :input-value="props.all"
-              :indeterminate="props.indeterminate"
-              primary
-              hide-details
-              @click="toggleAll"
-            />
-            <th
-              v-for="header in props.headers"
-              :key="header.text"
-            >
-              {{ header.text }}
-            </th>
-          </tr>
+          <template v-slot:headers="props">
+            <tr>
+              <th>
+                <v-checkbox
+                  v-model="selected"
+                  primary
+                  hide-details
+                  @click.stop="toggleAll"
+                />
+              </th>
+              <th
+                v-for="header in props.headers"
+                :key="header.text">
+                {{
+                  header.text
+                }}
+              </th>
+            </tr>
           </template>
           <template v-slot:items="props">
-            <v-checkbox
-              :input-value="props.selected"
-              primary
-              hide-details
-              @click="add(props.item)"
-            />
+            <tr >
+              <td >
+                <v-checkbox
+                  v-model="props.item.selected"
+                  input-value="true"
 
-            <td class="text-xs-right">{{ props.item.name }}</td>
-            <td>
-              <img
-                :src="props.item.url"
-                width="80px">
-            </td>
-            <td :width="1">
-              <v-btn
-                icon
-                color="blue lighten-2"
-                @click=" if(props.item.number>1)props.item.number -= 1">
-                <v-icon
-                  small
-                >
-                  mdi-minus
-                </v-icon>
-            </v-btn></td>
-            <td :width="1">
-              <v-text-field
-                v-model="props.item.number"
-                required
-                solo/>
-            </td>
-            <td :width="1">
-              <v-btn
-                icon
-                color="blue lighten-2"
-                @click=" if(props.item.number<props.item.stock)props.item.number += 1">
-                <v-icon
-                  small
-                >
-                  mdi-plus
-                </v-icon>
-              </v-btn>
-            </td>
-            <td class="text-xs-right">{{ props.item.price }}</td>
-            <td>
-              <v-tooltip
-                top
-                content-class="top">
+                  primary
+                  hide-details
+                />
+              </td><td class="text-xs-right">{{ props.item.name }}</td>
+              <td>
+                <img
+                  :src="props.item.url"
+                  width="80px">
+              </td>
+              <td :width="1">
                 <v-btn
-                  slot="activator"
-                  class="v-btn--simple"
-                  color="danger"
                   icon
-                >
-                  <v-icon color="error">mdi-close</v-icon>
+                  color="blue lighten-2"
+                  @click=" if(props.item.number>1)props.item.number -= 1">
+                  <v-icon
+                    small
+                  >
+                    mdi-minus
+                  </v-icon>
+              </v-btn></td>
+              <td :width="1">
+                <v-text-field
+                  v-model="props.item.number"
+                  required
+                  solo/>
+              </td>
+              <td :width="1">
+                <v-btn
+                  icon
+                  color="blue lighten-2"
+                  @click=" if(props.item.number<props.item.stock)props.item.number += 1">
+                  <v-icon
+                    small
+                  >
+                    mdi-plus
+                  </v-icon>
                 </v-btn>
-                <span>Move out of cart</span>
-              </v-tooltip>
-            </td>
-          </template>
+              </td>
+              <td class="text-xs-right">{{ props.item.price *props.item.number }}</td>
+              <td>
+                <v-tooltip
+                  top
+                  content-class="top">
+                  <v-btn
+                    slot="activator"
+                    class="v-btn--simple"
+                    color="danger"
+                    icon
+                  >
+                    <v-icon color="error">mdi-close</v-icon>
+                  </v-btn>
+                  <span>Move out of cart</span>
+                </v-tooltip>
+              </td>
+          </tr></template>
           <template
             v-slot:footer>
             <td/>
@@ -120,7 +123,7 @@
 export default {
   data: () => ({
     publicPath: process.env.BASE_URL,
-    selected: [],
+    selected: true,
     headers: [
       {
         sortable: false,
@@ -177,24 +180,31 @@ export default {
         selected: true
       }
     ]
+
   }),
   methods: {
     toggleAll () {
-      if (this.selected.length === this.items.length) this.selected = []
-      else {
-        this.selected = this.items.slice()
+      if (this.selected) {
+        this.selected = false
+        for (var i = 0; i < this.items.length; i++) {
+          this.items[i].selected = false
+        }
+      } else {
+        this.selected = true
+        for (i = 0; i < this.items.length; i++) {
+          this.items[i].selected = true
+        }
       }
-    },
-    add (item) {
-      if (this.selected.indexOf(item) > -1) { this.selected.remove(item) } else { this.selected.push(item) }
     },
     total_price () {
       var sum = 0
-      for (var i = 0; i < this.selected.length; i++) {
-        sum += this.selected[i].number * this.selected[i].price
+      for (var i = 0; i < this.items.length; i++) {
+        if (this.items[i].selected) { sum += this.items[i].number * this.items[i].price }
       }
       return sum
     }
   }
+
 }
+
 </script>
