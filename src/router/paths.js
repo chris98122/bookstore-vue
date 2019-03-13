@@ -15,6 +15,16 @@ export default [
     view: 'UserProfile'
   },
   {
+    path: '/login',
+    name: 'Login',
+    view: 'Login'
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    view: 'Register'
+  },
+  {
     path: '/browse',
     name: 'Browse',
     view: 'Browse'
@@ -28,18 +38,6 @@ export default [
     path: '/statistics',
     name: 'Statistics',
     view: 'Statistics'
-  },
-  {
-    path: '/typography',
-    view: 'Typography'
-  },
-  {
-    path: '/icons',
-    view: 'Icons'
-  },
-  {
-    path: '/notifications',
-    view: 'Notifications'
   },
   {
     path: '/cart',

@@ -79,6 +79,16 @@ export default {
         text: 'Dashboard'
       },
       {
+        to: '/login',
+        icon: 'mdi-login',
+        text: 'Login'
+      },
+      {
+        to: '/register',
+        icon: 'mdi-login',
+        text: 'Register'
+      },
+      {
         to: '/user-profile',
         icon: 'mdi-account',
         text: 'User Profile'
@@ -97,21 +107,6 @@ export default {
         to: '/statistics',
         icon: 'mdi-shopping',
         text: 'Statistics'
-      },
-      {
-        to: '/typography',
-        icon: 'mdi-format-font',
-        text: 'Typography'
-      },
-      {
-        to: '/icons',
-        icon: 'mdi-chart-bubble',
-        text: 'Icons'
-      },
-      {
-        to: '/notifications',
-        icon: 'mdi-bell',
-        text: 'Notifications'
       },
       {
         to: '/cart',

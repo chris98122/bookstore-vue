@@ -7,18 +7,32 @@
     <v-layout
       justify-center
       wrap
-    ><v-flex xs6>
-      <v-text-field
-        v-model="search"
-        append-icon="search"
-        label="Search order number"
-        single-line
-        hide-details
-      >
-        <template slot="append">
-          <v-icon>mdi-magnify</v-icon>
-        </template>
-    </v-text-field></v-flex>
+    >
+      <v-flex xs4>
+        <v-text-field
+          v-model="search2"
+          append-icon="search"
+          label="Search order time"
+          single-line
+          hide-details
+        >
+          <template slot="append">
+            <v-icon>mdi-magnify</v-icon>
+          </template>
+      </v-text-field></v-flex>
+
+      <v-flex xs4>
+        <v-text-field
+          v-model="search"
+          append-icon="search"
+          label="Search order id"
+          single-line
+          hide-details
+        >
+          <template slot="append">
+            <v-icon>mdi-magnify</v-icon>
+          </template>
+      </v-text-field></v-flex>
       <v-flex
         md12
       ><v-data-table
@@ -44,38 +58,39 @@
           <td>
             {{ item.id }}
           </td>
-          <td>
+          <td class="text-xs">
             {{ item.time }}
           </td>
           <td>
-            <v-list-tile
+            <tr
               v-for="value in item.items"
               :key=" value.url">
               {{ value["name"] }}
-            </v-list-tile >
+            </tr>
           </td>
           <td>
-            <v-list-tile
+            <tr
               v-for="value in item.items"
               :key=" value.url">
+
               <img
                 :src="value.url"
                 width="40px">
-            </v-list-tile >
+            </tr>
           </td>
           <td>
-            <v-list-tile
+            <tr
               v-for="value in item.items"
               :key=" value.url">
               {{ value["number"] }}
-            </v-list-tile >
+            </tr>
           </td>
           <td>
-            <v-list-tile
+            <tr
               v-for="value in item.items"
               :key=" value.url">
               {{ value["price"] }}
-            </v-list-tile >
+            </tr>
           </td>
           <td>
             {{ total_price(item.items) }}
@@ -156,6 +171,13 @@ export default {
             stock: 7,
             price: 35,
             url: '1.jpg'
+          },
+          {
+            name: 'javascript tutorial second version',
+            number: 1,
+            stock: 9,
+            price: 12,
+            url: '4.jpg'
           },
           {
             name: 'Python Crash Course',
