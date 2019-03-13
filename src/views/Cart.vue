@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-container
     fill-height
     fluid
@@ -13,37 +13,50 @@
       >
 
         <v-data-table
+          v-model="selected"
           :headers="headers"
           :items="items"
+          select-all
+          item-key="name"
           class="elevation-1"
-          hide-actions
         >
           <template
-            slot="headerCell"
-            slot-scope="{ header }"
-          >
-            <span
-              class="subheading font-weight-light text-success text--darken-3"
-              v-text="header.text"
+            v-slot:headers="props"
+          ><tr>
+            <v-checkbox
+              :input-value="props.all"
+              :indeterminate="props.indeterminate"
+              primary
+              hide-details
+              @click="toggleAll"
             />
+            <th
+              v-for="header in props.headers"
+              :key="header.text"
+            >
+              {{ header.text }}
+            </th>
+          </tr>
           </template>
-          <template
-            slot="items"
-            slot-scope="{ item }"
-          >
-            <td
-              class="text-lg-left"
-              width="200px">{{ item.name }}</td>
+          <template v-slot:items="props">
+            <v-checkbox
+              :input-value="props.selected"
+              primary
+              hide-details
+              @click="add(props.item)"
+            />
+
+            <td class="text-xs-right">{{ props.item.name }}</td>
             <td>
               <img
-                :src="item.url"
+                :src="props.item.url"
                 width="80px">
             </td>
             <td :width="1">
               <v-btn
                 icon
                 color="blue lighten-2"
-                @click=" if(item.number>1)item.number -= 1">
+                @click=" if(props.item.number>1)props.item.number -= 1">
                 <v-icon
                   small
                 >
@@ -52,17 +65,15 @@
             </v-btn></td>
             <td :width="1">
               <v-text-field
-                v-model="item.number"
+                v-model="props.item.number"
                 required
-                solo
-
-              />
+                solo/>
             </td>
             <td :width="1">
               <v-btn
                 icon
                 color="blue lighten-2"
-                @click=" if(item.number<item.stock)item.number += 1">
+                @click=" if(props.item.number<props.item.stock)props.item.number += 1">
                 <v-icon
                   small
                 >
@@ -70,7 +81,7 @@
                 </v-icon>
               </v-btn>
             </td>
-            <td class="text-xs">${{ item.price * item.number }}</td>
+            <td class="text-xs-right">{{ props.item.price }}</td>
             <td>
               <v-tooltip
                 top
@@ -109,6 +120,7 @@
 export default {
   data: () => ({
     publicPath: process.env.BASE_URL,
+    selected: [],
     headers: [
       {
         sortable: false,
@@ -153,21 +165,36 @@ export default {
         number: 1,
         stock: 7,
         price: 35,
-        url: '1.jpg'
+        url: '1.jpg',
+        selected: true
       },
       {
         name: 'javascript tutorial second version',
         number: 1,
         stock: 9,
         price: 12,
-        url: '4.jpg'
+        url: '4.jpg',
+        selected: true
       }
-    ],
+    ]
+  }),
+  methods: {
+    toggleAll () {
+      if (this.selected.length === this.items.length) this.selected = []
+      else {
+        this.selected = this.items.slice()
+      }
+    },
+    add (item) {
+      if (this.selected.indexOf(item) > -1) { this.selected.remove(item) } else { this.selected.push(item) }
+    },
     total_price () {
       var sum = 0
-      for (var i = 0; i < this.items.length; i++) { sum += this.items[i].number * this.items[i].price }
+      for (var i = 0; i < this.selected.length; i++) {
+        sum += this.selected[i].number * this.selected[i].price
+      }
       return sum
     }
-  })
+  }
 }
 </script>
