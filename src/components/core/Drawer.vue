@@ -57,13 +57,6 @@
             v-text="link.text"
           />
         </v-list-tile>
-        <v-list-tile
-          disabled
-          active-class="primary"
-          class="v-list-item v-list__tile--buy"
-          to="/upgrade"
-        >
-        </v-list-tile>
       </v-layout>
     </v-img>
   </v-navigation-drawer>
@@ -94,6 +87,16 @@ export default {
         to: '/browse',
         icon: 'mdi-book',
         text: 'Browse Books'
+      },
+      {
+        to: '/orders',
+        icon: 'mdi-shopping',
+        text: 'Orders'
+      },
+      {
+        to: '/statistics',
+        icon: 'mdi-shopping',
+        text: 'Statistics'
       },
       {
         to: '/typography',

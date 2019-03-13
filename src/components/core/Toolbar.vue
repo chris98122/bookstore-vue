@@ -44,6 +44,20 @@
         >
           <v-icon color="tertiary">mdi-book</v-icon>
         </router-link>
+        <router-link
+          v-ripple
+          class="toolbar-items"
+          to="/orders"
+        >
+          <v-icon color="tertiary">mdi-book</v-icon>
+        </router-link>
+        <router-link
+          v-ripple
+          class="toolbar-items"
+          to="/statistics"
+        >
+          <v-icon color="tertiary">mdi-book</v-icon>
+        </router-link>
         <v-menu
           bottom
           left

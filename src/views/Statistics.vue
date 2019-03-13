@@ -4,29 +4,15 @@
     fluid
     grid-list-xl
   >
-
     <v-layout
       justify-center
       wrap
     >
-      <v-flex xs6>
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          label="Search"
-          single-line
-          hide-details
-        >
-          <template slot="append">
-            <v-icon>mdi-magnify</v-icon>
-          </template>
-      </v-text-field></v-flex>
       <v-flex
         md12
       ><v-data-table
         :headers="headers"
         :items="items"
-        :search="search"
         class="elevation-1"
         hide-actions
       >
@@ -69,12 +55,11 @@
               <span>Move in cart</span>
             </v-tooltip>
           </td>
-</template></v-data-table></v-flex></v-flex></v-layout></v-container></template>
+</template></v-data-table></v-flex></v-layout></v-container></template>
 
 <script>
 export default {
   data: () => ({
-    search: '',
     publicPath: process.env.BASE_URL,
     headers: [
       {

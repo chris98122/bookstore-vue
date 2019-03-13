@@ -20,6 +20,16 @@ export default [
     view: 'Browse'
   },
   {
+    path: '/orders',
+    name: 'Order',
+    view: 'Orders'
+  },
+  {
+    path: '/statistics',
+    name: 'Statistics',
+    view: 'Statistics'
+  },
+  {
     path: '/typography',
     view: 'Typography'
   },
