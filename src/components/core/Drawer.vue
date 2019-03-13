@@ -91,9 +91,9 @@ export default {
         text: 'User Profile'
       },
       {
-        to: '/table-list',
-        icon: 'mdi-clipboard-outline',
-        text: 'Table List'
+        to: '/browse',
+        icon: 'mdi-book',
+        text: 'Browse Books'
       },
       {
         to: '/typography',
@@ -104,11 +104,6 @@ export default {
         to: '/icons',
         icon: 'mdi-chart-bubble',
         text: 'Icons'
-      },
-      {
-        to: '/maps',
-        icon: 'mdi-map-marker',
-        text: 'Maps'
       },
       {
         to: '/notifications',

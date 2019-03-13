@@ -15,9 +15,9 @@ export default [
     view: 'UserProfile'
   },
   {
-    path: '/table-list',
-    name: 'Table List',
-    view: 'TableList'
+    path: '/browse',
+    name: 'Browse',
+    view: 'Browse'
   },
   {
     path: '/typography',
@@ -26,10 +26,6 @@ export default [
   {
     path: '/icons',
     view: 'Icons'
-  },
-  {
-    path: '/maps',
-    view: 'Maps'
   },
   {
     path: '/notifications',

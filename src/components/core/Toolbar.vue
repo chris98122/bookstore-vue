@@ -40,9 +40,9 @@
         <router-link
           v-ripple
           class="toolbar-items"
-          to="/"
+          to="/browse"
         >
-          <v-icon color="tertiary">mdi-view-dashboard</v-icon>
+          <v-icon color="tertiary">mdi-book</v-icon>
         </router-link>
         <v-menu
           bottom
@@ -54,31 +54,18 @@
             v-ripple
             slot="activator"
             class="toolbar-items"
-            to="/notifications"
+            to="/cart"
           >
             <v-badge
               color="error"
               overlap
             >
               <template slot="badge">
-                {{ notifications.length }}
+                {{ cart.length }}
               </template>
-              <v-icon color="tertiary">mdi-bell</v-icon>
+              <v-icon color="tertiary">mdi-cart</v-icon>
             </v-badge>
           </router-link>
-          <v-card>
-            <v-list dense>
-              <v-list-tile
-                v-for="notification in notifications"
-                :key="notification"
-                @click="onClick"
-              >
-                <v-list-tile-title
-                  v-text="notification"
-                />
-              </v-list-tile>
-            </v-list>
-          </v-card>
         </v-menu>
         <router-link
           v-ripple
@@ -100,12 +87,9 @@ import {
 
 export default {
   data: () => ({
-    notifications: [
-      'Mike, John responded to your email',
-      'You have 5 new tasks',
-      'You\'re now a friend with Andrew',
-      'Another Notification',
-      'Another One'
+    cart: [
+      '',
+      ''
     ],
     title: null,
     responsive: false,
