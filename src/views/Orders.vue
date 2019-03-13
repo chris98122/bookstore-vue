@@ -11,7 +11,7 @@
       <v-text-field
         v-model="search"
         append-icon="search"
-        label="Search"
+        label="Search order number"
         single-line
         hide-details
       >
@@ -24,6 +24,7 @@
       ><v-data-table
         :headers="headers"
         :items="orders"
+        :search="search"
         class="elevation-1"
         hide-actions
       >
@@ -41,40 +42,43 @@
           slot-scope="{ item }"
         >
           <td>
-            {{ item.number }}
+            {{ item.id }}
           </td>
           <td>
-            <ul>
-              <li v-for="value in item.items">
-                {{ value["name"] }}
-              </li>
-            </ul>
+            {{ item.time }}
           </td>
           <td>
-            <ul>
-              <li v-for="value in item.items">
-                <img
-                  :src="value.url"
-                  width="80px">
-              </li>
-            </ul>
+            <v-list-tile
+              v-for="value in item.items"
+              :key=" value.url">
+              {{ value["name"] }}
+            </v-list-tile >
           </td>
           <td>
-            <ul>
-              <li v-for="value in item.items">
-                {{ value["number"] }}
-              </li>
-            </ul>
+            <v-list-tile
+              v-for="value in item.items"
+              :key=" value.url">
+              <img
+                :src="value.url"
+                width="40px">
+            </v-list-tile >
           </td>
           <td>
-            <ul>
-              <li v-for="value in item.items">
-                {{ value["price"] }}
-              </li>
-            </ul>
+            <v-list-tile
+              v-for="value in item.items"
+              :key=" value.url">
+              {{ value["number"] }}
+            </v-list-tile >
           </td>
           <td>
-            {{ item.total_price(item.items) }}
+            <v-list-tile
+              v-for="value in item.items"
+              :key=" value.url">
+              {{ value["price"] }}
+            </v-list-tile >
+          </td>
+          <td>
+            {{ total_price(item.items) }}
           </td>
         </template>
 </v-data-table></v-flex></v-layout></v-container></template>
@@ -82,12 +86,18 @@
 <script>
 export default {
   data: () => ({
+    search: '',
     publicPath: process.env.BASE_URL,
     headers: [
       {
         sortable: false,
-        text: 'OrderNumber',
-        value: 'order_num'
+        text: 'OrderID',
+        value: 'order_id'
+      },
+      {
+        sortable: false,
+        text: 'OrderTime',
+        value: 'order_time'
       },
       {
         sortable: false,
@@ -99,7 +109,8 @@ export default {
         text: 'BookPic',
         value: 'pic'
       },
-      { sortable: false,
+      {
+        sortable: false,
         text: 'Number',
         value: 'number'
       },
@@ -116,7 +127,8 @@ export default {
     ],
     orders: [
       {
-        number: 1,
+        id: 1,
+        time: Date(),
         items: [
           {
             name: 'javascript tutorial',
@@ -132,14 +144,39 @@ export default {
             price: 12,
             url: '4.jpg'
           }
-        ],
-        total_price (items) {
-          var sum = 0
-          for (var i = 0; i < this.items.length; i++) { sum += this.items[i].number * this.items[i].price }
-          return sum
-        }
+        ]
+      },
+      {
+        id: 2,
+        time: Date(),
+        items: [
+          {
+            name: 'javascript tutorial',
+            number: 1,
+            stock: 7,
+            price: 35,
+            url: '1.jpg'
+          },
+          {
+            name: 'Python Crash Course',
+            number: 2,
+            author: '埃里',
+            stock: 9,
+            ISBN: 9787115428028,
+            price: 10,
+            url: '2.jpg'
+          }
+        ]
       }
     ]
-  })
+  }),
+  methods: {
+    total_price (items) {
+      var sum = 0
+      for (var i = 0; i < items.length; i++) { sum += items[i].number * items[i].price }
+      return sum
+    }
+  }
+
 }
 </script>
