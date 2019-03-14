@@ -17,58 +17,67 @@
           single-line
           hide-details
         >
+
           <template slot="append">
             <v-icon>mdi-magnify</v-icon>
           </template>
       </v-text-field></v-flex>
       <v-flex
         md12
-      ><v-data-table
-        :headers="headers"
-        :items="items"
-        :search="search"
-        class="elevation-1"
-        hide-actions
       >
-        <template
-          slot="headerCell"
-          slot-scope="{ header }"
+
+        <v-data-table
+          :headers="headers"
+          :items="items"
+          :search="search"
+          class="elevation-1"
+          hide-actions
         >
-          <span
-            class="subheading font-weight-light text-success text--darken-3"
-            v-text="header.text"
-          />
-        </template>
-        <template
-          slot="items"
-          slot-scope="{ item }"
-        >
-          <td
-            class="text-lg-left"
-            width="200px">{{ item.name }}</td>
-          <td>
-            <img
-              :src="item.url"
-              width="80px">
-          </td>
-          <td class="text-xs">{{ item.author }}</td>
-          <td class="text-xs">{{ item.stock }}</td>
-          <td class="text-xs">{{ item.ISBN }}</td>
-          <td class="text-xs">${{ item.price }}</td>
-          <td>
-            <v-tooltip
-              top
-              content-class="top">
-              <v-btn
-                slot="activator"
-                class="v-btn--simple"
-                icon
+          <template
+            slot="headerCell"
+            slot-scope="{ header }"
+          >
+            <span
+              class="subheading font-weight-light text-success text--darken-3"
+              v-text="header.text"
+            />
+          </template>
+          <template
+            slot="items"
+            slot-scope="{ item }"
+          >
+            <td
+              class="text-lg-left"
+              width="200px">
+
+              <router-link
+                to="/book_detail"
               >
-                <v-icon color="blue">mdi-cart</v-icon>
-              </v-btn>
-              <span>Move in cart</span>
-            </v-tooltip>
-          </td>
+                {{ item.name }}
+            </router-link></td>
+            <td>
+              <img
+                :src="item.url"
+                width="80px">
+            </td>
+            <td class="text-xs">{{ item.author }}</td>
+            <td class="text-xs">{{ item.stock }}</td>
+            <td class="text-xs">{{ item.ISBN }}</td>
+            <td class="text-xs">${{ item.price }}</td>
+            <td>
+              <v-tooltip
+                top
+                content-class="top">
+                <v-btn
+                  slot="activator"
+                  class="v-btn--simple"
+                  icon
+                >
+                  <v-icon color="blue">mdi-cart</v-icon>
+                </v-btn>
+                <span>Move in cart</span>
+              </v-tooltip>
+            </td>
 </template></v-data-table></v-flex></v-flex></v-layout></v-container></template>
 
 <script>

@@ -5,10 +5,10 @@
         <v-layout
           align-center >
           <v-flex
-            xs12
-            sm8
-            md4>
-            <v-card class="px-2 pb-3">
+            xs6
+            sm
+            md>
+            <v-card class="px-3 pb-4">
               <form>
                 <v-text-field
                   v-model="name"
@@ -46,8 +46,12 @@
                   @blur="$v.email.$touch()"
                 />
 
-                <v-btn @click="submit">submit</v-btn>
-                <v-btn @click="clear">clear</v-btn>
+                <v-btn
+                  color="blue"
+                  @click="submit">submit</v-btn>
+                <v-btn
+                  color="blue"
+                  @click="clear">clear</v-btn>
               </form>
 </v-card></v-flex></v-layout></v-container></v-content></v-app></template>
 
@@ -97,6 +101,7 @@ export default {
       const errors = []
       if (!this.$v.password.$dirty) return errors
       !this.$v.password.required && errors.push('Password is required')
+      !this.$v.password.minLength && errors.push('Password must be more than 6 words')
       !this.$v.repeatPassword.sameAsPassword && errors.push('Passwords must be identical.')
       return errors
     }

@@ -5,78 +5,94 @@
         <v-layout
           align-center >
           <v-flex
-            xs12
-            sm8
-            md4>
-            <v-card class="px-2 pb-3">
-              <v-card-text>
-                <v-layout
-                  justify-center
-                  pt-2>
-                  <v-avatar
-                    size="40px"
-                    color="pink">
-                    <v-icon dark>lock</v-icon>
-                    <!-- <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar"> -->
-                  </v-avatar>
-                </v-layout>
-                <v-layout
-                  justify-center
-                  py-3>
-                  <div class="headline">Sign in</div>
-                </v-layout>
+            xs6
+            sm
+            md>
+            <v-card class="px-3 pb-4">
+              <form>
+                <v-text-field
+                  v-model="name"
+                  :error-messages="nameErrors"
+                  :counter="10"
+                  label="Username"
+                  required
+                  @input="$v.name.$touch()"
+                  @blur="$v.name.$touch()"
+                />
+                <v-text-field
+                  id="password"
+                  v-model="password"
+                  name="Password"
+                  label="Password"
+                  type="password"
+                  required
+                />
 
-                <v-form>
-                  <v-text-field
-                    v-model="email"
-                    :rules="emailRules"
-                    name="login"
-                    label="Email Address"
-                    type="text"
-                    required
-                  />
-                  <v-text-field
-                    id="password"
-                    v-model="password"
-                    :rules="passwordRules"
-                    name="Password"
-                    label="Password"
-                    type="password"
-                    required
-                  />
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
                 <v-btn
-                  block
-                  color="info"
-                  @click="submit">Login</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-content>
-  </v-app>
-</template>
+                  color="blue"
+                  @click="submit">submit</v-btn>
+                <v-btn
+                  color="blue"
+                  @click="clear">clear</v-btn>
+              </form>
+</v-card></v-flex></v-layout></v-container></v-content></v-app></template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, minLength } from 'vuelidate/lib/validators'
+
 export default {
-  name: 'Login',
-  data () {
-    return {
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid'
-      ],
-      password: '',
-      passwordRules: [v => !!v || 'Password is required']
+  mixins: [validationMixin],
+
+  validations: {
+    name: { required, maxLength: maxLength(10) },
+    password: {
+      required,
+      minLength: minLength(6)
     }
   },
+
+  data: () => ({
+    name: '',
+    password: '',
+    submitStatus: null
+  }),
+
+  computed: {
+    nameErrors () {
+      const errors = []
+      if (!this.$v.name.$dirty) return errors
+      !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
+      !this.$v.name.required && errors.push('Name is required.')
+      return errors
+    },
+    passwordErrors () {
+      const errors = []
+      if (!this.$v.password.$dirty) return errors
+      !this.$v.password.required && errors.push('Password is required')
+      !this.$v.password.minLength && errors.push('Password must be more than 6 words')
+      return errors
+    }
+  },
+
   methods: {
     submit () {
-      console.log(this.email, this.password)
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+      } else {
+        console.log(this.name, this.password)
+        // do your submit logic here
+        this.submitStatus = 'PENDING'
+        setTimeout(() => {
+          this.submitStatus = 'OK'
+        }, 500)
+      }
+    },
+    clear () {
+      this.$v.$reset()
+      this.name = ''
+      this.password = ''
     }
   }
 }

@@ -43,5 +43,10 @@ export default [
     path: '/cart',
     name: 'Cart',
     view: 'Cart'
+  },
+  {
+    path: '/book_detail',
+    name: 'Detail',
+    view: 'BookDetail'
   }
 ]
