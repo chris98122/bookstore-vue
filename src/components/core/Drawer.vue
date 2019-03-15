@@ -29,7 +29,7 @@
             />
           </v-list-tile-avatar>
           <v-list-tile-title class="title">
-            Vuetify MD
+            Bookstore
           </v-list-tile-title>
         </v-list-tile>
         <v-divider/>
@@ -71,13 +71,9 @@ import {
 
 export default {
   data: () => ({
-    logo: './img/vuetifylogo.png',
+    publicPath: process.env.BASE_URL,
+    logo: 'logo.jpg',
     links: [
-      {
-        to: '/dashboard',
-        icon: 'mdi-view-dashboard',
-        text: 'Dashboard'
-      },
       {
         to: '/login',
         icon: 'mdi-login',

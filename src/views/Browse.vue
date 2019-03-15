@@ -56,9 +56,13 @@
                 {{ item.name }}
             </router-link></td>
             <td>
-              <img
-                :src="item.url"
-                width="80px">
+              <router-link
+                to="/book_detail"
+              >
+                <img
+                  :src="item.url"
+                  width="80px">
+              </router-link>
             </td>
             <td class="text-xs">{{ item.author }}</td>
             <td class="text-xs">{{ item.stock }}</td>
