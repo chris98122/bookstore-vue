@@ -1,43 +1,38 @@
 <template>
-  <v-container
-    fill-height
-    fluid
-    grid-list-xl
-  >
+  <v-container py-0>
     <v-layout
       justify-center
       wrap
     >
       <v-flex
-        md12
-      >
-        <p
-          class="text-lg-left"
-          width="200px">{{ item.name }}</p>
-
+        xs4>
         <img
           :src="item.url"
-          width="80px">
+        >
+      </v-flex>
+      <v-flex
+        xs6>
+        <h3
+          class="display-3"
+        >{{ item.name }}</h3>
 
-        <p class="text-xs">{{ item.author }}</p>
-        <p class="text-xs">{{ item.stock }}</p>
-        <p class="text-xs">{{ item.ISBN }}</p>
-        <p class="text-xs">${{ item.price }}</p>
+        <p class="body-1">{{ item.author }}</p>
+        <p class="body-1">stock:{{ item.stock }}</p>
+        <p class="body-1">ISBN:{{ item.ISBN }}</p>
+        <p class="body-1">${{ item.price }}</p>
 
-        <v-tooltip
-          top
-          content-class="top">
-          <v-btn
-            slot="activator"
-            class="v-btn--simple"
-            icon
-          >
-            <v-icon color="blue">mdi-cart</v-icon>
-          </v-btn>
-          <span>Move in cart</span>
-        </v-tooltip>
+        <v-btn
+          color="error"
+          class="v-btn"
+        >
+          Move in cart
+          <v-icon
+            color="white"
+          >mdi-cart</v-icon>
+        </v-btn>
+      </v-flex>
 
-</v-flex></v-layout></v-container></template>
+</v-layout></v-container></template>
 
 <script>
 export default {

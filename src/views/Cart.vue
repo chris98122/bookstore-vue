@@ -113,6 +113,7 @@
               <v-btn
                 icon
                 color="blue lighten-2"
+
                 @click=" buy">
                 buy
               </v-btn>
