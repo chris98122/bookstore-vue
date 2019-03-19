@@ -82,7 +82,7 @@
                 <span>Move in cart</span>
               </v-tooltip>
             </td>
-</template></v-data-table></v-flex></v-flex></v-layout></v-container></template>
+</template></v-data-table></v-flex></v-layout></v-container></template>
 
 <script>
 export default {

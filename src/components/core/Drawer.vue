@@ -85,11 +85,6 @@ export default {
         text: 'Register'
       },
       {
-        to: '/user-profile',
-        icon: 'mdi-account',
-        text: 'User Profile'
-      },
-      {
         to: '/browse',
         icon: 'mdi-book',
         text: 'Browse Books'
@@ -108,6 +103,16 @@ export default {
         to: '/cart',
         icon: 'mdi-cart',
         text: 'Cart'
+      },
+      {
+        to: '/manage_user',
+        icon: 'mdi-account',
+        text: 'Manage User'
+      },
+      {
+        to: '/on_shelf',
+        icon: 'mdi-book',
+        text: 'On Shelf'
       }
     ],
     responsive: false

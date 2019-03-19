@@ -17,7 +17,12 @@ import i18n from '@/i18n'
 import router from '@/router'
 import store from '@/store'
 import Vuelidate from 'vuelidate'
+import ToggleButton from 'vue-js-toggle-button'
+import VueCoreImageUpload from 'vue-core-image-upload'
+Vue.use(ToggleButton)
 Vue.use(Vuelidate)
+Vue.use(VueCoreImageUpload)
+
 // Sync store with router
 sync(store, router)
 

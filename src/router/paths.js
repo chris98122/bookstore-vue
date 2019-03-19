@@ -5,11 +5,6 @@
  */
 export default [
   {
-    path: '/user-profile',
-    name: 'User Profile',
-    view: 'UserProfile'
-  },
-  {
     path: '/login',
     name: 'Login',
     view: 'Login'
@@ -43,5 +38,15 @@ export default [
     path: '/book_detail',
     name: 'Detail',
     view: 'BookDetail'
+  },
+  {
+    path: '/manage_user',
+    name: 'ManageUser',
+    view: 'ManageUser'
+  },
+  {
+    path: '/on_shelf',
+    name: 'OnShelf',
+    view: 'OnShelf'
   }
 ]
