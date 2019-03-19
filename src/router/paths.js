@@ -48,5 +48,10 @@ export default [
     path: '/on_shelf',
     name: 'OnShelf',
     view: 'OnShelf'
+  },
+  {
+    path: '/manage_book',
+    name: 'ManageBook',
+    view: 'ManageBook'
   }
 ]

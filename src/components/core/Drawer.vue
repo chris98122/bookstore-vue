@@ -110,6 +110,11 @@ export default {
         text: 'Manage User'
       },
       {
+        to: '/manage_book',
+        icon: 'mdi-book',
+        text: 'Manage Book'
+      },
+      {
         to: '/on_shelf',
         icon: 'mdi-book',
         text: 'On Shelf'
