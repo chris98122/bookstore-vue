@@ -10,11 +10,11 @@
       wrap
     ><v-flex
       xs3>
-      <v-btn>
-        <router-link
-          to="/on_shelf"
-        />On shelf
-      </v-btn>
+      <router-link
+        to="/on_shelf"
+      >On shelf
+
+      </router-link>
     </v-flex>
       <v-flex xs3>
         <v-text-field
@@ -130,7 +130,7 @@
                 <span>Off Shelf</span>
               </v-tooltip>
             </td>
-</template></v-data-table></v-flex></v-layout></v-container></template>
+</template></v-data-table></v-flex></v-flex></v-layout></v-container></template>
 
 <script>
 export default {

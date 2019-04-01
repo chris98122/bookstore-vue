@@ -143,7 +143,7 @@ export default {
     orders: [
       {
         id: 1,
-        time: Date(),
+        time: '2018-8-8 16:00',
         items: [
           {
             name: 'javascript tutorial',
@@ -163,7 +163,7 @@ export default {
       },
       {
         id: 2,
-        time: Date(),
+        time: '2018-8-4 16:00',
         items: [
           {
             name: 'javascript tutorial',

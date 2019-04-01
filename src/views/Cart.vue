@@ -27,7 +27,7 @@
                   v-model="selected"
                   primary
                   hide-details
-                  @click.stop="toggleAll"
+                  @click.stop="toggleAll()"
                 />
               </th>
               <th
@@ -114,7 +114,7 @@
                 icon
                 color="blue lighten-2"
 
-                @click=" buy">
+                @click=" buy()">
                 buy
               </v-btn>
             </td>
@@ -138,8 +138,7 @@ export default {
       },
       {
         sortable: false,
-        text: ' ',
-        value: 'number'
+        text: ' '
       },
       {
         sortable: false,
@@ -148,8 +147,7 @@ export default {
       },
       {
         sortable: false,
-        text: ' ',
-        value: 'number'
+        text: '  '
       },
       {
         sortable: false,
@@ -203,6 +201,9 @@ export default {
         if (this.items[i].selected) { sum += this.items[i].number * this.items[i].price }
       }
       return sum
+    },
+    buy () {
+
     }
   }
 

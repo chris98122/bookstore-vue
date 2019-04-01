@@ -9,7 +9,7 @@
       justify-center
       wrap
     >
-      <v-flex xs6>
+      <v-flex md12>
         <v-text-field
           v-model="search"
           append-icon="search"

@@ -133,7 +133,8 @@ export default {
         stock: 7,
         ISBN: 9787111216332,
         price: 35,
-        url: '1.jpg'
+        url: '1.jpg',
+        detail_url: '/book_detail'
       },
       {
         name: 'javascript tutorial second version',

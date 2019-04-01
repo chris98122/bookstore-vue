@@ -102,6 +102,7 @@
 export default {
   data: () => ({
     search: '',
+    search2: '',
     publicPath: process.env.BASE_URL,
     headers: [
       {
