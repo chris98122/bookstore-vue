@@ -32,7 +32,8 @@
               </th>
               <th
                 v-for="header in props.headers"
-                :key="header.text">
+                :key="header.text"
+              >
                 {{
                   header.text
                 }}

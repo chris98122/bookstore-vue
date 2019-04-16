@@ -66,7 +66,7 @@
             </td>
             <td class="text-xs">{{ item.author }}</td>
             <td class="text-xs">{{ item.stock }}</td>
-            <td class="text-xs">{{ item.ISBN }}</td>
+            <td class="text-xs">{{ item.isbn }}</td>
             <td class="text-xs">${{ item.price }}</td>
             <td>
               <v-tooltip
@@ -127,32 +127,21 @@ export default {
       }
     ],
     items: [
-      {
-        name: 'javascript tutorial',
-        author: 'author one',
-        stock: 7,
-        ISBN: 9787111216332,
-        price: 35,
-        url: '1.jpg',
-        detail_url: '/book_detail'
-      },
-      {
-        name: 'javascript tutorial second version',
-        author: 'author two',
-        stock: 9,
-        ISBN: 9787111216322,
-        price: 12,
-        url: '4.jpg'
-      },
-      {
-        name: 'Python Crash Course',
-        author: '埃里',
-        stock: 9,
-        ISBN: 9787115428028,
-        price: 10,
-        url: '2.jpg'
-      }
     ]
-  })
+  }),
+  mounted: function () {
+    var self = this
+    var url = 'http://localhost:8080/book'
+    this.axios
+      .get(url)
+      .then(response => {
+        self.items = response.data
+        console.log(response.data)
+      })
+      .catch(error => {
+        JSON.stringify(error)
+        console.log(error)
+      })
+  }
 }
 </script>

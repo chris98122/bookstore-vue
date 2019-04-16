@@ -19,12 +19,16 @@ import store from '@/store'
 import Vuelidate from 'vuelidate'
 import ToggleButton from 'vue-js-toggle-button'
 import VueCoreImageUpload from 'vue-core-image-upload'
+import axios from 'axios'
+// Sync store with router
+
 Vue.use(ToggleButton)
 Vue.use(Vuelidate)
 Vue.use(VueCoreImageUpload)
 
-// Sync store with router
 sync(store, router)
+Vue.prototype.axios = axios
+axios.defaults.baseURL = 'http://localhost:8080/'
 
 Vue.config.productionTip = false
 
