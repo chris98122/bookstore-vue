@@ -100,17 +100,20 @@ export default {
           params: {
             name: this.name,
             password: this.password
+          },
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          withCredentials: true
+        }).then(response => {
+          console.log(response.data)
+          if (response.data === '登录成功') {
+            this.$router.push('/browse')
+            this.logged = true
+          } else {
+            alert('登录失败')
           }
         })
-          .then(response => {
-            console.log(response.data)
-            if (response.data === '登录成功') {
-              this.$router.push('/browse')
-              this.logged = true
-            } else {
-              alert('登录失败')
-            }
-          })
           .catch(error => {
             JSON.stringify(error)
             console.log(error)

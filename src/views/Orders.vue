@@ -166,33 +166,24 @@ export default {
         id: 2,
         time: Date(),
         items: [
-          {
-            name: 'javascript tutorial',
-            number: 1,
-            stock: 7,
-            price: 35,
-            url: '1.jpg'
-          },
-          {
-            name: 'javascript tutorial second version',
-            number: 1,
-            stock: 9,
-            price: 12,
-            url: '4.jpg'
-          },
-          {
-            name: 'Python Crash Course',
-            number: 2,
-            author: '埃里',
-            stock: 9,
-            ISBN: 9787115428028,
-            price: 10,
-            url: '2.jpg'
-          }
         ]
       }
     ]
   }),
+  mounted: function () {
+    var self = this
+    var url = 'http://localhost:8080/orders'
+    this.axios
+      .get(url)
+      .then(response => {
+        self.items = response.data
+        console.log(response.data)
+      })
+      .catch(error => {
+        JSON.stringify(error)
+        console.log(error)
+      })
+  },
   methods: {
     total_price (items) {
       var sum = 0
