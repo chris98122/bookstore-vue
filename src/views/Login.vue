@@ -2,14 +2,13 @@
   <v-app>
     <v-content>
       <v-container>
-        <v-layout
-          align-center >
+        <v-layout align-center>
           <v-flex
             xs6
             sm
             md>
             <v-card class="px-3 pb-4">
-              <form>
+              <form v-if="!logged">
                 <v-text-field
                   v-model="name"
                   :error-messages="nameErrors"
@@ -35,7 +34,18 @@
                   color="blue"
                   @click="clear">clear</v-btn>
               </form>
-</v-card></v-flex></v-layout></v-container></v-content></v-app></template>
+
+            </v-card>
+            <v-footer class="pa-3">
+              <v-spacer/>
+              <div v-if="logged">您已经登录</div>
+          </v-footer></v-flex
+        ></v-layout
+      ></v-container
+    ></v-content
+  ></v-app
+></template
+>
 
 <script>
 import { validationMixin } from 'vuelidate'
@@ -55,14 +65,16 @@ export default {
   data: () => ({
     name: '',
     password: '',
-    submitStatus: null
+    submitStatus: null,
+    logged: false
   }),
 
   computed: {
     nameErrors () {
       const errors = []
       if (!this.$v.name.$dirty) return errors
-      !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
+      !this.$v.name.maxLength &&
+        errors.push('Name must be at most 10 characters long')
       !this.$v.name.required && errors.push('Name is required.')
       return errors
     },
@@ -70,7 +82,8 @@ export default {
       const errors = []
       if (!this.$v.password.$dirty) return errors
       !this.$v.password.required && errors.push('Password is required')
-      !this.$v.password.minLength && errors.push('Password must be more than 6 words')
+      !this.$v.password.minLength &&
+        errors.push('Password must be more than 6 words')
       return errors
     }
   },
@@ -81,7 +94,27 @@ export default {
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
       } else {
-        console.log(this.name, this.password)
+        this.axios({
+          method: 'post',
+          url: 'http://localhost:8080/login',
+          params: {
+            name: this.name,
+            password: this.password
+          }
+        })
+          .then(response => {
+            console.log(response.data)
+            if (response.data === '登录成功') {
+              this.$router.push('/browse')
+              this.logged = true
+            } else {
+              alert('登录失败')
+            }
+          })
+          .catch(error => {
+            JSON.stringify(error)
+            console.log(error)
+          })
         // do your submit logic here
         this.submitStatus = 'PENDING'
         setTimeout(() => {

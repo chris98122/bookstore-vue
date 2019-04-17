@@ -113,7 +113,27 @@ export default {
       if (this.$v.$invalid) {
         this.submitStatus = 'ERROR'
       } else {
-        console.log(this.email, this.name, this.password, this.repeatPassword)
+        this.axios({
+          method: 'post',
+          url: 'http://localhost:8080/register',
+          params: {
+            name: this.name,
+            password: this.password,
+            email: this.email
+          }
+        })
+          .then(response => {
+            console.log(response.data)
+            if (response.data === '注册成功') {
+              this.$router.push('/browse')
+            } else {
+              alert('注册失败')
+            }
+          })
+          .catch(error => {
+            JSON.stringify(error)
+            console.log(error)
+          })
         // do your submit logic here
         this.submitStatus = 'PENDING'
         setTimeout(() => {
