@@ -55,45 +55,25 @@
           slot="items"
           slot-scope="{ item }"
         >
-          <td>
+          <td >
             {{ item.id }}
+          </td >
+          <td
+            class="text-xs">
+            {{ item.date }}
+          </td>
+          <td >
+            {{ item.totPrice }}
           </td>
           <td class="text-xs">
-            {{ item.time }}
+            {{ item.name }}
           </td>
-          <td>
-            <tr
-              v-for="value in item.items"
-              :key=" value.url">
-              {{ value["name"] }}
-            </tr>
+          <td class="text-xs"/>
+          <td class="text-xs">
+            {{ item.bNum }}
           </td>
-          <td>
-            <tr
-              v-for="value in item.items"
-              :key=" value.url">
-
-              <img
-                :src="value.url"
-                width="40px">
-            </tr>
-          </td>
-          <td>
-            <tr
-              v-for="value in item.items"
-              :key=" value.url">
-              {{ value["number"] }}
-            </tr>
-          </td>
-          <td>
-            <tr
-              v-for="value in item.items"
-              :key=" value.url">
-              {{ value["price"] }}
-            </tr>
-          </td>
-          <td>
-            {{ total_price(item.items) }}
+          <td class="text-xs">
+            {{ item.price }}
           </td>
         </template>
 </v-data-table></v-flex></v-layout></v-container></template>
@@ -108,12 +88,17 @@ export default {
       {
         sortable: false,
         text: 'OrderID',
-        value: 'order_id'
+        value: 'id'
       },
       {
         sortable: false,
         text: 'OrderTime',
-        value: 'order_time'
+        value: 'date'
+      },
+      {
+        sortable: false,
+        text: 'TotalPrice',
+        value: 'totPrice'
       },
       {
         sortable: false,
@@ -128,55 +113,25 @@ export default {
       {
         sortable: false,
         text: 'Number',
-        value: 'number'
+        value: 'bNum'
       },
       {
         sortable: false,
         text: 'Price',
         value: 'price'
-      },
-      {
-        sortable: false,
-        text: 'TotalPrice',
-        value: 'total_price'
       }
     ],
     orders: [
-      {
-        id: 1,
-        time: Date(),
-        items: [
-          {
-            name: 'javascript tutorial',
-            number: 1,
-            stock: 7,
-            price: 35,
-            url: '1.jpg'
-          },
-          {
-            name: 'javascript tutorial second version',
-            number: 1,
-            stock: 9,
-            price: 12,
-            url: '4.jpg'
-          }
-        ]
-      },
-      {
-        id: 2,
-        time: Date(),
-        items: [
-        ]
-      }
     ]
   }),
   mounted: function () {
     var self = this
-    var url = 'http://localhost:8080/orders'
+    var url = 'http://localhost:8080/orders_show'
     this.axios
       .get(url)
       .then(response => {
-        self.items = response.data
+        self.orders = response.data
+        this.clear()
         console.log(response.data)
       })
       .catch(error => {
@@ -185,10 +140,16 @@ export default {
       })
   },
   methods: {
-    total_price (items) {
-      var sum = 0
-      for (var i = 0; i < items.length; i++) { sum += items[i].number * items[i].price }
-      return sum
+    clear () {
+      var id = 0
+      for (var i = 0; i < this.orders.length; i++) {
+        if (this.orders[i].id === id) {
+          id = this.orders[i].id
+          this.orders[i].id = ''
+          this.orders[i].date = ''
+          this.orders[i].totPrice = ''
+        } else { id = this.orders[i].id }
+      }
     }
   }
 

@@ -112,7 +112,7 @@ export default {
       {
         sortable: false,
         text: 'ISBN',
-        value: 'ISBN'
+        value: 'isbn'
       },
       {
         sortable: false,
