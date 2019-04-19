@@ -25,8 +25,8 @@ import axios from 'axios'
 Vue.use(ToggleButton)
 Vue.use(Vuelidate)
 Vue.use(VueCoreImageUpload)
-
 sync(store, router)
+axios.defaults.withCredentials = true
 Vue.prototype.axios = axios
 axios.defaults.baseURL = 'http://localhost:8080/'
 
@@ -36,6 +36,11 @@ Vue.config.productionTip = false
 new Vue({
   i18n,
   router,
+  data: function () {
+    return {
+      isAdmin: false
+    }
+  },
   store,
   render: h => h(App)
 }).$mount('#app')

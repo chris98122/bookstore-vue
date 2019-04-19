@@ -42,21 +42,46 @@
             color="purple"
           />
         </v-list-tile>
-        <v-list-tile
-          v-for="(link, i) in links"
-          :key="i"
-          :to="link.to"
-          :active-class="color"
-          avatar
-          class="v-list-item"
-        >
-          <v-list-tile-action>
-            <v-icon>{{ link.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title
-            v-text="link.text"
-          />
-        </v-list-tile>
+        <div v-if="!this.$root.isAdmin">
+          <v-list-tile
+            v-for="(link, i) in links"
+
+            :key="i"
+            :to="link.to"
+            :active-class="color"
+            avatar
+            class="v-list-item"
+
+          >
+            <v-list-tile-action >
+              <v-icon>{{ link.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title
+              v-text="link.text"
+            />
+
+          </v-list-tile>
+        </div>
+        <div v-if="this.$root.isAdmin">
+          <v-list-tile
+            v-for="(link, i) in adminlinks"
+
+            :key="i"
+            :to="link.to"
+            :active-class="color"
+            avatar
+            class="v-list-item"
+
+          >
+            <v-list-tile-action >
+              <v-icon>{{ link.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title
+              v-text="link.text"
+            />
+
+          </v-list-tile>
+        </div>
       </v-layout>
     </v-img>
   </v-navigation-drawer>
@@ -95,14 +120,21 @@ export default {
         text: 'Orders'
       },
       {
-        to: '/statistics',
-        icon: 'mdi-shopping',
-        text: 'Statistics'
-      },
-      {
         to: '/cart',
         icon: 'mdi-cart',
         text: 'Cart'
+      }
+    ],
+    adminlinks: [
+      {
+        to: '/login',
+        icon: 'mdi-login',
+        text: 'Login'
+      },
+      {
+        to: '/statistics',
+        icon: 'mdi-shopping',
+        text: 'Statistics'
       },
       {
         to: '/manage_user',
@@ -118,8 +150,7 @@ export default {
         to: '/on_shelf',
         icon: 'mdi-book',
         text: 'On Shelf'
-      }
-    ],
+      }],
     responsive: false
   }),
   computed: {

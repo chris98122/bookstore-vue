@@ -112,6 +112,7 @@ export default {
             this.logged = true
           } else if (response.data === '管理员登录成功') {
             this.$router.push('/manage_user')
+            this.$root.isAdmin = true
             this.logged = true
           } else {
             alert('登录失败')

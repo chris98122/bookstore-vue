@@ -173,7 +173,7 @@ export default {
       .get(url)
       .then(response => {
         self.items = response.data
-        this.set_selected()
+        this.set_select()
         console.log(response.data)
       })
       .catch(error => {
