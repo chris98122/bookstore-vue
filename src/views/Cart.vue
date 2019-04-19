@@ -60,7 +60,7 @@
                 <v-btn
                   icon
                   color="blue lighten-2"
-                  @click=" if(props.item.number>1)props.item.number -= 1">
+                  @click=" if(props.item.bNum>1)props.item.bNum -= 1">
                   <v-icon
                     small
                   >
@@ -69,7 +69,7 @@
               </v-btn></td>
               <td :width="1">
                 <v-text-field
-                  v-model="props.item.number"
+                  v-model="props.item.bNum"
                   required
                   solo/>
               </td>
@@ -77,7 +77,7 @@
                 <v-btn
                   icon
                   color="blue lighten-2"
-                  @click=" if(props.item.number<props.item.stock)props.item.number += 1">
+                  @click=" if(props.item.bNum<props.item.stock)props.item.bNum += 1">
                   <v-icon
                     small
                   >
@@ -85,7 +85,7 @@
                   </v-icon>
                 </v-btn>
               </td>
-              <td class="text-xs-right">{{ props.item.price *props.item.number }}</td>
+              <td class="text-xs-right">{{ props.item.price *props.item.bNum }}</td>
               <td>
                 <v-tooltip
                   top
@@ -144,7 +144,7 @@ export default {
       {
         sortable: false,
         text: 'Number',
-        value: 'number'
+        value: 'bNum'
       },
       {
         sortable: false,
@@ -163,25 +163,13 @@ export default {
       }
     ],
     items: [
-      {
-        name: 'javascript tutorial',
-        number: 1,
-        stock: 7,
-        price: 35,
-        url: '1.jpg',
-        selected: true
-      },
-      {
-        name: 'javascript tutorial second version',
-        number: 1,
-        stock: 9,
-        price: 12,
-        url: '4.jpg',
-        selected: true
-      }
     ]
 
   }),
+  mounted: function () {
+    this.set_select()
+    console.log(this.items)
+  },
   methods: {
     toggleAll () {
       if (this.selected) {
@@ -199,12 +187,25 @@ export default {
     total_price () {
       var sum = 0
       for (var i = 0; i < this.items.length; i++) {
-        if (this.items[i].selected) { sum += this.items[i].number * this.items[i].price }
+        if (this.items[i].selected) { sum += this.items[i].bNum * this.items[i].price }
       }
       return sum
     },
     buy () {
 
+    },
+    set_select () {
+      var newitems = []
+      for (var i = 0; i < this.items[0]['orderContent'].length; i++) {
+        var a = this.items[0]['orderContent'][i].bNum
+        var b = this.items[0]['orderContent'][i].book.name
+        var c = this.items[0]['orderContent'][i].book.price
+        var d = this.items[0]['orderContent'][i].book.stock
+        var cart = { bNum: a, name: b, price: c, stock: d, selected: true }
+        console.log(cart)
+        newitems[i] = cart
+      }
+      this.items = newitems
     }
   }
 

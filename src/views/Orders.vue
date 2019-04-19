@@ -65,15 +65,27 @@
           <td >
             {{ item.totPrice }}
           </td>
-          <td class="text-xs">
-            {{ item.name }}
+          <td>
+            <tr
+              v-for="value in item.orderContent"
+              :key=" value.id">
+              {{ value["book"]["name"] }}
+            </tr>
           </td>
-          <td class="text-xs"/>
-          <td class="text-xs">
-            {{ item.bNum }}
+          <td/>
+          <td>
+            <tr
+              v-for="value in item.orderContent"
+              :key=" value.id">
+              {{ value["bNum"] }}
+            </tr>
           </td>
-          <td class="text-xs">
-            {{ item.price }}
+          <td>
+            <tr
+              v-for="value in item.orderContent"
+              :key=" value.id">
+              {{ value["book"]["price"] }}
+            </tr>
           </td>
         </template>
 </v-data-table></v-flex></v-layout></v-container></template>
@@ -131,7 +143,6 @@ export default {
       .get(url)
       .then(response => {
         self.orders = response.data
-        this.clear()
         console.log(response.data)
       })
       .catch(error => {

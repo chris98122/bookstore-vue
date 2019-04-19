@@ -49,10 +49,10 @@
             <td class="text-md-left">
               {{ item.name }}
             </td>
-            <td class="text-md-left">{{ item.ID }}</td>
+            <td class="text-md-left">{{ item.id }}</td>
             <td class="right">
               <toggle-button
-                v-model="item.state"
+                v-model="item.isActive"
                 :labels="{checked: '启用', unchecked: '禁用'}"/>
             </td>
 <td/></template></v-data-table></v-flex></v-layout></v-container></template>
@@ -71,32 +71,32 @@ export default {
       {
         sortable: false,
         text: 'UserID',
-        value: 'ID'
+        value: 'id'
       },
       {
         sortable: false,
         text: 'Action',
-        value: 'action',
+        value: 'isActive',
         align: 'right'
       }
     ],
     items: [
-      {
-        name: 'User One',
-        ID: 1,
-        state: true
-      },
-      {
-        name: 'User Two',
-        ID: 2,
-        state: true
-      },
-      {
-        name: 'User Three',
-        ID: 3,
-        state: true
-      }
     ]
-  })
+  }),
+
+  mounted: function () {
+    var self = this
+    var url = 'http://localhost:8080/manageuser'
+    this.axios
+      .get(url)
+      .then(response => {
+        self.items = response.data
+        console.log(response.data)
+      })
+      .catch(error => {
+        JSON.stringify(error)
+        console.log(error)
+      })
+  }
 }
 </script>

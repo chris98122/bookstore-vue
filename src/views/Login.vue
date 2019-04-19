@@ -107,8 +107,11 @@ export default {
           withCredentials: true
         }).then(response => {
           console.log(response.data)
-          if (response.data === '登录成功') {
+          if (response.data === '用户登录成功') {
             this.$router.push('/browse')
+            this.logged = true
+          } else if (response.data === '管理员登录成功') {
+            this.$router.push('/manage_user')
             this.logged = true
           } else {
             alert('登录失败')
