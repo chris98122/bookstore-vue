@@ -48,21 +48,16 @@
           >
             <td
               class="text-lg-left"
-              width="200px">
-
-              <router-link
-                to="/book_detail"
-              >
-                {{ item.name }}
-            </router-link></td>
+              width="200px"
+              @click="getdetail( item.id)"
+            >
+              {{ item.name }}</td>
             <td>
-              <router-link
-                to="/book_detail"
-              >
-                <img
-                  :src="item.url"
-                  width="80px">
-              </router-link>
+
+              <img
+                :src="
+                item.url"
+                width="80px">
             </td>
             <td class="text-xs">{{ item.author }}</td>
             <td class="text-xs">{{ item.stock }}</td>
@@ -100,7 +95,8 @@ export default {
         text: 'BookPic',
         value: 'pic'
       },
-      { sortable: false,
+      {
+        sortable: false,
         text: 'Author',
         value: 'author'
       },
@@ -126,22 +122,48 @@ export default {
         align: 'right'
       }
     ],
-    items: [
+    items: [{
+      id: 1,
+      name: 'javascript tutorial',
+      number: 1,
+      stock: 7,
+      price: 35,
+      url: '1.jpg'
+    }
     ]
   }),
   mounted: function () {
-    var self = this
     var url = 'http://localhost:8080/book'
     this.axios
       .get(url)
       .then(response => {
-        self.items = response.data
+        this.items = response.data
         console.log(response.data)
       })
       .catch(error => {
         JSON.stringify(error)
         console.log(error)
       })
+  },
+  methods: {
+    getdetail (bid) {
+      console.log('clicked')
+      var url = 'http://localhost:8080/bookdetail'
+      this.axios({
+        method: 'post',
+        url: url,
+        params: { id: bid }
+      })
+        .then(response => {
+          this.items = response.data
+          this.$router.push({ name: 'Detail', params: this.items[0] })
+          console.log(response.data)
+        })
+        .catch(error => {
+          JSON.stringify(error)
+          console.log(error)
+        })
+    }
   }
 }
 </script>

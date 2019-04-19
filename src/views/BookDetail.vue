@@ -6,20 +6,18 @@
     >
       <v-flex
         xs4>
-        <img
-          :src="item.url"
-        >
+
       </v-flex>
       <v-flex
         xs6>
         <h3
           class="display-3"
-        >{{ item.name }}</h3>
+        >{{ this.$route.params.name }}</h3>
 
-        <p class="body-1">{{ item.author }}</p>
-        <p class="body-1">stock:{{ item.stock }}</p>
-        <p class="body-1">ISBN:{{ item.ISBN }}</p>
-        <p class="body-1">${{ item.price }}</p>
+        <p class="body-1">{{ this.$route.params.author }}</p>
+        <p class="body-1">stock:{{ this.$route.params.stock }}</p>
+        <p class="body-1">ISBN:{{ this.$route.params.isbn }}</p>
+        <p class="body-1">${{ this.$route.params.price }}</p>
 
         <v-btn
           color="error"
@@ -37,17 +35,11 @@
 <script>
 export default {
   data: () => ({
-    publicPath: process.env.BASE_URL,
-    item:
-      {
-        name: 'javascript tutorial',
-        author: 'author one',
-        stock: 7,
-        ISBN: 9787111216332,
-        price: 35,
-        url: '1.jpg'
-      }
+    publicPath: process.env.BASE_URL
 
-  })
+  }),
+  mounted: function () {
+    console.log(this.$route.params)
+  }
 }
 </script>
