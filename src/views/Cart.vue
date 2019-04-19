@@ -167,8 +167,19 @@ export default {
 
   }),
   mounted: function () {
-    this.set_select()
-    console.log(this.items)
+    var self = this
+    var url = 'http://localhost:8080/cart_show'
+    this.axios
+      .get(url)
+      .then(response => {
+        self.items = response.data
+        this.set_selected()
+        console.log(response.data)
+      })
+      .catch(error => {
+        JSON.stringify(error)
+        console.log(error)
+      })
   },
   methods: {
     toggleAll () {
