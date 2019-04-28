@@ -95,6 +95,7 @@
                     class="v-btn--simple"
                     color="danger"
                     icon
+                    @click=" moveout(props.item.id)"
                   >
                     <v-icon color="error">mdi-close</v-icon>
                   </v-btn>
@@ -218,6 +219,27 @@ export default {
         .then(response => {
           console.log(this.items)
           console.log(this.total_price())
+          alert(response.data)
+        })
+        .catch(error => {
+          JSON.stringify(error)
+          console.log(error)
+        })
+    },
+    moveout (b) {
+      var url = 'http://localhost:8080/cart_moveout'
+      console.log(b)
+      this.axios({
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        method: 'post',
+        url: url,
+        data: this.$qs.stringify({
+          bid: b
+        })
+      })
+        .then(response => {
           alert(response.data)
         })
         .catch(error => {

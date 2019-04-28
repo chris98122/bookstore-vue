@@ -5,9 +5,7 @@
       wrap
     >
       <v-flex
-        xs4>
-
-      </v-flex>
+        xs4/>
       <v-flex
         xs6>
         <h3
@@ -28,6 +26,8 @@
             color="white"
           >mdi-cart</v-icon>
         </v-btn>
+
+        <v-text>{{ this.$route.params.detail }}</v-text>
       </v-flex>
 
 </v-layout></v-container></template>
