@@ -20,6 +20,7 @@
         <v-btn
           color="error"
           class="v-btn"
+          @click="move(this.$route.params.id)"
         >
           Move in cart
           <v-icon
@@ -27,9 +28,11 @@
           >mdi-cart</v-icon>
         </v-btn>
 
+      </v-flex>
+      <v-flex
+        xs4>
         <v-text>{{ this.$route.params.detail }}</v-text>
       </v-flex>
-
 </v-layout></v-container></template>
 
 <script>
@@ -40,6 +43,32 @@ export default {
   }),
   mounted: function () {
     console.log(this.$route.params)
-  }
+  },
+  method:
+          {
+
+            move (b) {
+              var url = 'http://localhost:8080/cart_movein'
+              console.log(b)
+              this.axios({
+                headers: {
+                  'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                method: 'post',
+                url: url,
+                data: this.$qs.stringify({
+                  bid: b
+                })
+              })
+                .then(response => {
+                  alert(response.data)
+                })
+                .catch(error => {
+                  JSON.stringify(error)
+                  console.log(error)
+                })
+            }
+          }
+
 }
 </script>

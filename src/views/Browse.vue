@@ -65,13 +65,18 @@
             <td>
               <v-tooltip
                 top
-                content-class="top">
+                content-class="top"
+
+              >
                 <v-btn
                   slot="activator"
                   class="v-btn--simple"
                   icon
+                  @click="move(item.id)"
                 >
-                  <v-icon color="blue">mdi-cart</v-icon>
+                  <v-icon
+                    color="blue"
+                  >mdi-cart</v-icon>
                 </v-btn>
                 <span>Move in cart</span>
               </v-tooltip>
@@ -160,6 +165,27 @@ export default {
           this.items = response.data
           this.$router.push({ name: 'Detail', params: this.items[0] })
           console.log(response.data)
+        })
+        .catch(error => {
+          JSON.stringify(error)
+          console.log(error)
+        })
+    },
+    move (b) {
+      var url = 'http://localhost:8080/cart_movein'
+      console.log(b)
+      this.axios({
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        method: 'post',
+        url: url,
+        data: this.$qs.stringify({
+          bid: b
+        })
+      })
+        .then(response => {
+          alert(response.data)
         })
         .catch(error => {
           JSON.stringify(error)
