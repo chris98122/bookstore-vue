@@ -167,12 +167,11 @@ export default {
 
   }),
   mounted: function () {
-    var self = this
     var url = 'http://localhost:8080/cart_show'
     this.axios
       .get(url)
       .then(response => {
-        self.items = response.data
+        this.items = response.data
         this.set_select()
         console.log(response.data)
       })
@@ -203,16 +202,38 @@ export default {
       return sum
     },
     buy () {
-
+      console.log(this.total_price())
+      var url = 'http://localhost:8080/cart_buy'
+      this.axios({
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        method: 'post',
+        url: url,
+        data: this.$qs.stringify({
+          item: JSON.stringify(this.items),
+          totprice: this.total_price()
+        }, { arrayFormat: 'brackets' })
+      })
+        .then(response => {
+          console.log(this.items)
+          console.log(this.total_price())
+          alert(response.data)
+        })
+        .catch(error => {
+          JSON.stringify(error)
+          console.log(error)
+        })
     },
     set_select () {
       var newitems = []
       for (var i = 0; i < this.items[0]['orderContent'].length; i++) {
+        var e = this.items[0]['orderContent'][i].book.id
         var a = this.items[0]['orderContent'][i].bNum
         var b = this.items[0]['orderContent'][i].book.name
         var c = this.items[0]['orderContent'][i].book.price
         var d = this.items[0]['orderContent'][i].book.stock
-        var cart = { bNum: a, name: b, price: c, stock: d, selected: true }
+        var cart = { id: e, bNum: a, name: b, price: c, stock: d, selected: true }
         console.log(cart)
         newitems[i] = cart
       }

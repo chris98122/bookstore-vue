@@ -137,13 +137,16 @@ export default {
     ]
   }),
   mounted: function () {
-    var self = this
     var url = 'http://localhost:8080/orders_show'
     this.axios
       .get(url)
       .then(response => {
-        self.orders = response.data
-        console.log(response.data)
+        if (response.data === '用户未登录') {
+          this.orders = ['你还没有登录哦']
+        } else {
+          this.orders = response.data
+        }
+        console.log(this.orders)
       })
       .catch(error => {
         JSON.stringify(error)

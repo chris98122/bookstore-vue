@@ -114,13 +114,16 @@ export default {
         this.submitStatus = 'ERROR'
       } else {
         this.axios({
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
           method: 'post',
           url: 'http://localhost:8080/register',
-          params: {
+          data: this.$qs.stringify({
             name: this.name,
             password: this.password,
             email: this.email
-          }
+          })
         })
           .then(response => {
             console.log(response.data)

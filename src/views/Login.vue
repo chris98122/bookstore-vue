@@ -95,15 +95,15 @@ export default {
         this.submitStatus = 'ERROR'
       } else {
         this.axios({
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
           method: 'post',
           url: 'http://localhost:8080/login',
-          params: {
+          data: this.$qs.stringify({
             name: this.name,
             password: this.password
-          },
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-          },
+          }),
           withCredentials: true
         }).then(response => {
           console.log(response.data)
@@ -113,6 +113,9 @@ export default {
           } else if (response.data === '管理员登录成功') {
             this.$router.push('/manage_user')
             this.$root.isAdmin = true
+            this.logged = true
+          } else if (response.data === '"您已经登录了') {
+            this.$router.push('/browse')
             this.logged = true
           } else {
             alert('登录失败')

@@ -21,7 +21,8 @@ import ToggleButton from 'vue-js-toggle-button'
 import VueCoreImageUpload from 'vue-core-image-upload'
 import axios from 'axios'
 // Sync store with router
-
+import qs from 'qs'
+Vue.prototype.$qs = qs
 Vue.use(ToggleButton)
 Vue.use(Vuelidate)
 Vue.use(VueCoreImageUpload)

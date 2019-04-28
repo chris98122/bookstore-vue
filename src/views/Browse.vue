@@ -31,7 +31,6 @@
           :items="items"
           :search="search"
           class="elevation-1"
-          hide-actions
         >
           <template
             slot="headerCell"
@@ -150,9 +149,12 @@ export default {
       console.log('clicked')
       var url = 'http://localhost:8080/bookdetail'
       this.axios({
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
         method: 'post',
         url: url,
-        params: { id: bid }
+        data: this.$qs.stringify({ id: bid })
       })
         .then(response => {
           this.items = response.data
