@@ -175,6 +175,7 @@ export default {
         this.items = response.data
         this.set_select()
         console.log(response.data)
+        this.$root.cartsize = this.items.length
       })
       .catch(error => {
         JSON.stringify(error)
@@ -220,6 +221,7 @@ export default {
           console.log(this.items)
           console.log(this.total_price())
           alert(response.data)
+          this.$router.push('/orders')
         })
         .catch(error => {
           JSON.stringify(error)

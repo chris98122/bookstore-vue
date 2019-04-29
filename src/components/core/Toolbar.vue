@@ -62,7 +62,7 @@
               overlap
             >
               <template slot="badge">
-                {{ cart.length }}
+                {{ this.$root.cartsize }}
               </template>
               <v-icon color="tertiary">mdi-cart</v-icon>
             </v-badge>
@@ -88,10 +88,6 @@ import {
 
 export default {
   data: () => ({
-    cart: [
-      '',
-      ''
-    ],
     title: null,
     responsive: false,
     responsiveInput: false

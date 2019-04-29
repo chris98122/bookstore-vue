@@ -40,7 +40,8 @@ new Vue({
   data: function () {
     return {
       isAdmin: false,
-      logged: false
+      logged: false,
+      cartsize:0
     }
   },
   store,

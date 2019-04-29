@@ -124,9 +124,11 @@ export default {
             this.$root.isAdmin = true
             this.$root.logged = true
             this.$router.push('/manage_user')
-          } else if (response.data === '"您已经登录了') {
+          } else if (response.data === '您已经登录了') {
             this.$router.push('/browse')
             this.logged = true
+          } else if (response.data === '您被禁止登录') {
+            alert('您被禁止登录')
           } else {
             alert('登录失败')
           }

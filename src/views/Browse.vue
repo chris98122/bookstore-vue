@@ -42,6 +42,7 @@
             />
           </template>
           <template
+            v-if=" item.stock!=0"
             slot="items"
             slot-scope="{ item }"
           >
