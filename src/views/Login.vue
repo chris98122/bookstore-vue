@@ -37,7 +37,7 @@
                     @click="clear">clear</v-btn>
                 </form>
             </v-card></div>
-            </v-card>
+
             <v-footer class="pa-3">
               <v-spacer/>
               <div v-if="this.$root.logged" >
