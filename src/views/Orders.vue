@@ -93,23 +93,48 @@
             </v-date-picker>
           </v-menu>
         </div>
+      </v-flex>
+      <v-flex
+        xs4>
+        <p v-if="searched">您在{{ date }}至{{ date2 }}这段时间一共消费了￥{{ spending }}</p>
         <v-btn
           color="blue"
+          small
           @click="searchdate(date,date2)">search by time</v-btn>
-
-        <p v-if="searched">您这段时间一共消费了￥{{ spending }}</p>
       </v-flex>
-      <v-flex xs4>
+      <v-flex xs4 >
         <v-text-field
           v-model="search"
-          append-icon="search"
-          label="Search  "
+          label="Search By ID"
           single-line
           hide-details
         />
+      </v-flex>
+      <v-flex xs4 >
         <v-btn
           color="blue"
+          small
           @click="searchID(search)">search by ID</v-btn>
+      </v-flex>
+      <v-flex xs4 >
+        <v-btn
+          color="blue"
+          small
+          @click="showall()">显示全部订单</v-btn>
+      </v-flex>
+      <v-flex xs4 >
+        <v-text-field
+          v-model="searchbook"
+          label="Search By Bookname"
+          single-line
+          hide-details
+        />
+      </v-flex>
+      <v-flex xs4 >
+        <v-btn
+          color="blue"
+          small
+          @click="searchBook(searchbook)">search by Bookname</v-btn>
       </v-flex>
       <template slot="append">
         <v-icon>mdi-magnify</v-icon>
@@ -190,20 +215,21 @@ export default {
     date2: new Date().toISOString().substr(0, 10),
     menu2: false,
     search: '',
+    searchbook: '',
     publicPath: process.env.BASE_URL,
     headers: [
       {
-        sortable: false,
+        sortable: true,
         text: 'OrderID',
         value: 'id'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'OrderTime',
         value: 'date'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'TotalPrice',
         value: 'totPrice'
       },
@@ -298,12 +324,27 @@ export default {
         }
       }
     },
+    searchBook (bookname) {
+      var newitems = []
+      this.orders = this.ordersbackup
+      for (var i = 0; i < this.orders.length; i++) {
+        for (var j = 0; j < this.orders[i]['orderContent'].length; j++) {
+          if (this.orders[i]['orderContent'][j].book.name === bookname) {
+            newitems.push(this.orders[i])
+          }
+        }
+      }
+      this.orders = newitems
+    },
     calsum () {
       var sum = 0
       for (var i = 0; i < this.orders.length; i++) {
         sum += this.orders[i].totPrice
       }
       return sum
+    },
+    showall () {
+      this.orders = this.ordersbackup
     },
     getDate () {
       const toTwoDigits = num => num < 10 ? '0' + num : num

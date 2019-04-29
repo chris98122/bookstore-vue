@@ -104,7 +104,7 @@ export default {
     data: '',
     headers: [
       {
-        sortable: false,
+        sortable: true,
         text: 'BookName',
         value: 'name'
       },
@@ -113,7 +113,8 @@ export default {
         text: 'BookPic',
         value: 'pic'
       },
-      { sortable: false,
+      {
+        sortable: true,
         text: 'Author',
         value: 'author'
       },
@@ -123,7 +124,7 @@ export default {
         value: 'stock'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'ISBN',
         value: 'ISBN'
       },

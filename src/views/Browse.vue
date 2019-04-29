@@ -90,32 +90,32 @@ export default {
     publicPath: process.env.BASE_URL,
     headers: [
       {
-        sortable: false,
+        sortable: true,
         text: 'BookName',
         value: 'name'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'BookPic',
         value: 'pic'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'Author',
         value: 'author'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'Stock',
         value: 'stock'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'ISBN',
         value: 'isbn'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'Price',
         value: 'price'
       },
