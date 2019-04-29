@@ -20,6 +20,7 @@ import Vuelidate from 'vuelidate'
 import ToggleButton from 'vue-js-toggle-button'
 import VueCoreImageUpload from 'vue-core-image-upload'
 import axios from 'axios'
+
 // Sync store with router
 import qs from 'qs'
 Vue.prototype.$qs = qs
@@ -30,7 +31,6 @@ sync(store, router)
 axios.defaults.withCredentials = true
 Vue.prototype.axios = axios
 axios.defaults.baseURL = 'http://localhost:8080/'
-
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

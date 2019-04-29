@@ -8,63 +8,64 @@
       justify-center
       wrap
     >
-      <v-flex xs4>
 
-        <v-container grid-list-md>
-          <v-layout
-            row
-            wrap>
-            <v-flex
-              xs12
-              lg6>
-              <v-menu
-                ref="menu1"
-                v-model="menu1"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="dateFormatted"
-                    label="Date"
-                    hint="MM/DD/YYYY format"
-                    persistent-hint
-                    prepend-icon="event"
-                    @blur="date = parseDate(dateFormatted)"
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker
-                  v-model="date"
-                  no-title
-                  @input="menu1 = false"/>
-              </v-menu>
-              <p>Date in ISO format: <strong>{{ date }}</strong></p>
-            </v-flex>
+      <v-flex xs12>
+        <div >
+          <v-menu
+            ref="menu"
+            v-model="menu"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            :return-value.sync="date"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                v-model="date"
+                readonly
+                v-on="on"
+              />
+            </template>
+            <v-date-picker
+              v-model="date"
+              dark
+              no-title
+              color="green lighten-1"
+              class="dt"
+              scrollable>
+              <v-spacer/>
+              <v-btn
+                flat
+                color="primary"
+                @click="menu = false">Cancel</v-btn>
+              <v-btn
+                flat
+                color="primary"
+                @click="$refs.menu.save(date)">OK</v-btn>
+            </v-date-picker>
+          </v-menu>
+        </div>
+        <v-btn
+          color="blue"
+          @click="searchdate(date)">search</v-btn>
+      </v-flex>
 
-            <v-btn
-              color="blue"
-              @click="search(dateFormatted)">search</v-btn>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Search  "
+        single-line
+        hide-details
+      >
 
-</v-layout></v-container></v-flex></v-layout></v-container></template>
-
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          label="Search order time(exact day)"
-          single-line
-          hide-details
-        >
-          <template slot="append">
-            <v-icon>mdi-magnify</v-icon>
-          </template>
-      </v-text-field></v-flex>
+        <template slot="append">
+          <v-icon>mdi-magnify</v-icon>
+        </template>
+      </v-text-field>
       <v-flex
         md12
       ><v-data-table
@@ -124,15 +125,15 @@
             </tr>
           </td>
         </template>
-</v-data-table></v-flex>
+      </v-data-table></v-flex>
+
+</v-layout></v-container> </template>
 
 <script>
 export default {
   data: () => ({
-
-    dateFormatted: '',
-    menu1: false,
-    menu2: false,
+    date: new Date().toISOString().substr(0, 10),
+    menu: false,
     search: '',
     publicPath: process.env.BASE_URL,
     headers: [
@@ -202,7 +203,7 @@ export default {
   },
 
   methods: {
-    search (date) {
+    searchdate (date) {
       this.axios({
         headers: {
           'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -220,7 +221,16 @@ export default {
           JSON.stringify(error)
           console.log(error)
         })
+    },
+    getDate () {
+      const toTwoDigits = num => num < 10 ? '0' + num : num
+      let today = new Date()
+      let year = today.getFullYear()
+      let month = toTwoDigits(today.getMonth() + 1)
+      let day = toTwoDigits(today.getDate())
+      return `${day}/${month}/${year}`
     }
+
   }
 
 }
