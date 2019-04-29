@@ -110,7 +110,7 @@
             <td/>
             <td/>
             <td>Total Price:</td>
-            <td class="text-xs">${{ total_price() }}</td>
+            <td class="text-xs">￥{{ total_price() }}</td>
             <td :width="1">
               <v-btn
                 icon

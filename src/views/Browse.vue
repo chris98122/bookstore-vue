@@ -61,7 +61,7 @@
             <td class="text-xs">{{ item.author }}</td>
             <td class="text-xs">{{ item.stock }}</td>
             <td class="text-xs">{{ item.isbn }}</td>
-            <td class="text-xs">${{ item.price }}</td>
+            <td class="text-xs">￥{{ item.price }}</td>
             <td>
               <v-tooltip
                 top
