@@ -7,38 +7,49 @@
             xs6
             sm
             md>
-            <v-card class="px-3 pb-4">
-              <form v-if="!logged">
-                <v-text-field
-                  v-model="name"
-                  :error-messages="nameErrors"
-                  :counter="10"
-                  label="Username"
-                  required
-                  @input="$v.name.$touch()"
-                  @blur="$v.name.$touch()"
-                />
-                <v-text-field
-                  id="password"
-                  v-model="password"
-                  name="Password"
-                  label="Password"
-                  type="password"
-                  required
-                />
+            <div v-if="!this.$root.logged">
+              <v-card class="px-3 pb-4">
 
-                <v-btn
-                  color="blue"
-                  @click="submit">submit</v-btn>
-                <v-btn
-                  color="blue"
-                  @click="clear">clear</v-btn>
-              </form>
+                <form >
+                  <v-text-field
+                    v-model="name"
+                    :error-messages="nameErrors"
+                    :counter="10"
+                    label="Username"
+                    required
+                    @input="$v.name.$touch()"
+                    @blur="$v.name.$touch()"
+                  />
+                  <v-text-field
+                    id="password"
+                    v-model="password"
+                    name="Password"
+                    label="Password"
+                    type="password"
+                    required
+                  />
 
+                  <v-btn
+                    color="blue"
+                    @click="submit">submit</v-btn>
+                  <v-btn
+                    color="blue"
+                    @click="clear">clear</v-btn>
+                </form>
+            </v-card></div>
             </v-card>
             <v-footer class="pa-3">
               <v-spacer/>
-              <div v-if="logged">您已经登录</div>
+              <div v-if="this.$root.logged" >
+                <v-text>您已经登录</v-text>
+                <v-btn
+                  slot="activator"
+                  class="v-btn--simple"
+                  color="danger"
+                  @click=" logout()"
+                >logout
+                </v-btn>
+              </div>
           </v-footer></v-flex
         ></v-layout
       ></v-container
@@ -65,8 +76,7 @@ export default {
   data: () => ({
     name: '',
     password: '',
-    submitStatus: null,
-    logged: false
+    submitStatus: null
   }),
 
   computed: {
@@ -74,7 +84,7 @@ export default {
       const errors = []
       if (!this.$v.name.$dirty) return errors
       !this.$v.name.maxLength &&
-        errors.push('Name must be at most 10 characters long')
+      errors.push('Name must be at most 10 characters long')
       !this.$v.name.required && errors.push('Name is required.')
       return errors
     },
@@ -83,7 +93,7 @@ export default {
       if (!this.$v.password.$dirty) return errors
       !this.$v.password.required && errors.push('Password is required')
       !this.$v.password.minLength &&
-        errors.push('Password must be more than 6 words')
+      errors.push('Password must be more than 6 words')
       return errors
     }
   },
@@ -108,12 +118,12 @@ export default {
         }).then(response => {
           console.log(response.data)
           if (response.data === '用户登录成功') {
+            this.$root.logged = true
             this.$router.push('/browse')
-            this.logged = true
           } else if (response.data === '管理员登录成功') {
-            this.$router.push('/manage_user')
             this.$root.isAdmin = true
-            this.logged = true
+            this.$root.logged = true
+            this.$router.push('/manage_user')
           } else if (response.data === '"您已经登录了') {
             this.$router.push('/browse')
             this.logged = true
@@ -136,6 +146,26 @@ export default {
       this.$v.$reset()
       this.name = ''
       this.password = ''
+    },
+    logout () {
+      this.axios({
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        method: 'post',
+        url: 'http://localhost:8080/logout',
+        data: this.$qs.stringify()
+      })
+        .then(response => {
+          console.log(response.data)
+          if (response.data === '登出') {
+            this.$root.logged = false
+          }
+        })
+        .catch(error => {
+          JSON.stringify(error)
+          console.log(error)
+        })
     }
   }
 }

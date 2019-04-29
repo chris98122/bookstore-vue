@@ -39,7 +39,8 @@ new Vue({
   router,
   data: function () {
     return {
-      isAdmin: false
+      isAdmin: false,
+      logged: false
     }
   },
   store,

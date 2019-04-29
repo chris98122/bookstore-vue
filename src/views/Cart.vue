@@ -241,6 +241,7 @@ export default {
       })
         .then(response => {
           alert(response.data)
+          this.$router.go(0)
         })
         .catch(error => {
           JSON.stringify(error)
