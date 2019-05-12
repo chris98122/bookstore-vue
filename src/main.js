@@ -20,9 +20,9 @@ import Vuelidate from 'vuelidate'
 import ToggleButton from 'vue-js-toggle-button'
 import VueCoreImageUpload from 'vue-core-image-upload'
 import axios from 'axios'
-
 // Sync store with router
 import qs from 'qs'
+axios.defaults.withCredentials = true
 Vue.prototype.$qs = qs
 Vue.use(ToggleButton)
 Vue.use(Vuelidate)
@@ -41,7 +41,7 @@ new Vue({
     return {
       isAdmin: false,
       logged: false,
-      cartsize:0
+      cartsize: 0
     }
   },
   store,

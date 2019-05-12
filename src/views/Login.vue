@@ -106,12 +106,14 @@ export default {
       } else {
         this.axios({
           headers: {
+
+            'Access-Control-Allow-Origin': true,
             'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
           },
           method: 'post',
           url: 'http://localhost:8080/login',
           data: this.$qs.stringify({
-            name: this.name,
+            username: this.name,
             password: this.password
           }),
           withCredentials: true

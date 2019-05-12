@@ -115,12 +115,13 @@ export default {
       } else {
         this.axios({
           headers: {
+            'Access-Control-Allow-Origin': true,
             'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
           },
           method: 'post',
           url: 'http://localhost:8080/register',
           data: this.$qs.stringify({
-            name: this.name,
+            username: this.name,
             password: this.password,
             email: this.email
           })
@@ -129,6 +130,8 @@ export default {
             console.log(response.data)
             if (response.data === '注册成功') {
               this.$router.push('/browse')
+            } else if (response.data === '用户名已存在') {
+              alert('用户名已存在')
             } else {
               alert('注册失败')
             }

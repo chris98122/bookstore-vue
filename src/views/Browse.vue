@@ -138,9 +138,15 @@ export default {
     ]
   }),
   mounted: function () {
-    var url = 'http://localhost:8080/book'
-    this.axios
-      .get(url)
+    var url = 'http://localhost:8080/browse'
+    this.axios({
+      headers: {
+        'Access-Control-Allow-Origin': true,
+        'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      method: 'get',
+      url: url
+    })
       .then(response => {
         this.items = response.data
         console.log(response.data)
@@ -156,6 +162,8 @@ export default {
       var url = 'http://localhost:8080/bookdetail'
       this.axios({
         headers: {
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Origin': true,
           'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
         },
         method: 'post',
