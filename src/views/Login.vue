@@ -163,6 +163,7 @@ export default {
         .then(response => {
           console.log(response.data)
           if (response.data === '登出') {
+            this.$root.isAdmin = false
             this.$root.logged = false
           }
         })

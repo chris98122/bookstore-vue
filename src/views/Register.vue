@@ -8,52 +8,53 @@
             xs6
             sm
             md>
-            <v-card class="px-3 pb-4">
-              <form>
-                <v-text-field
-                  v-model="name"
-                  :error-messages="nameErrors"
-                  :counter="10"
-                  label="Username"
-                  required
-                  @input="$v.name.$touch()"
-                  @blur="$v.name.$touch()"
-                />
-                <v-text-field
-                  id="password"
-                  v-model="password"
-                  name="Password"
-                  label="Password"
-                  type="password"
-                  required
-                />
-                <v-text-field
-                  v-model="repeatPassword"
-                  :error-messages="passwordErrors"
-                  name="Password"
-                  label="Repeat password"
-                  type="password"
-                  required
-                  @input="$v.password.$touch()"
-                  @blur="$v.password.$touch()"
-                />
-                <v-text-field
-                  v-model="email"
-                  :error-messages="emailErrors"
-                  label="E-mail"
-                  required
-                  @input="$v.email.$touch()"
-                  @blur="$v.email.$touch()"
-                />
+            <div v-if="!this.$root.logged">
+              <v-card class="px-3 pb-4">
+                <form>
+                  <v-text-field
+                    v-model="name"
+                    :error-messages="nameErrors"
+                    :counter="10"
+                    label="Username"
+                    required
+                    @input="$v.name.$touch()"
+                    @blur="$v.name.$touch()"
+                  />
+                  <v-text-field
+                    id="password"
+                    v-model="password"
+                    name="Password"
+                    label="Password"
+                    type="password"
+                    required
+                  />
+                  <v-text-field
+                    v-model="repeatPassword"
+                    :error-messages="passwordErrors"
+                    name="Password"
+                    label="Repeat password"
+                    type="password"
+                    required
+                    @input="$v.password.$touch()"
+                    @blur="$v.password.$touch()"
+                  />
+                  <v-text-field
+                    v-model="email"
+                    :error-messages="emailErrors"
+                    label="E-mail"
+                    required
+                    @input="$v.email.$touch()"
+                    @blur="$v.email.$touch()"
+                  />
 
-                <v-btn
-                  color="blue"
-                  @click="submit">submit</v-btn>
-                <v-btn
-                  color="blue"
-                  @click="clear">clear</v-btn>
-              </form>
-</v-card></v-flex></v-layout></v-container></v-content></v-app></template>
+                  <v-btn
+                    color="blue"
+                    @click="submit">submit</v-btn>
+                  <v-btn
+                    color="blue"
+                    @click="clear">clear</v-btn>
+                </form>
+</v-card></div></v-flex></v-layout></v-container></v-content></v-app></template>
 
 <script>
 import { validationMixin } from 'vuelidate'
@@ -84,10 +85,12 @@ export default {
 
   computed: {
     nameErrors () {
+      var pattern = new RegExp('^[a-zA-Z0-9\u4e00-\u9fa5]+$')
       const errors = []
       if (!this.$v.name.$dirty) return errors
       !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
       !this.$v.name.required && errors.push('Name is required.')
+      !pattern.test(this.name) && errors.push('Name contains invalid characters.')
       return errors
     },
     emailErrors () {
