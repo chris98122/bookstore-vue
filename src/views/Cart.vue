@@ -164,7 +164,8 @@ export default {
       }
     ],
     items: [
-    ]
+    ],
+    backup: []
 
   }),
   mounted: function () {
@@ -173,6 +174,7 @@ export default {
       .get(url)
       .then(response => {
         this.items = response.data
+        this.backup = response.data
         this.set_select()
         console.log(response.data)
         this.$root.cartsize = this.items.length
@@ -208,18 +210,17 @@ export default {
       var url = 'http://localhost:8080/cart_buy'
       this.axios({
         headers: {
+
+          'Access-Control-Allow-Origin': true,
           'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
         },
         method: 'post',
         url: url,
         data: this.$qs.stringify({
-          item: JSON.stringify(this.items),
-          totprice: this.total_price()
+          item: JSON.stringify(this.formatitems())
         }, { arrayFormat: 'brackets' })
       })
         .then(response => {
-          console.log(this.items)
-          console.log(this.total_price())
           alert(response.data)
           this.$router.push('/orders')
         })
@@ -259,10 +260,23 @@ export default {
         var c = this.items[0]['orderContent'][i].book.price
         var d = this.items[0]['orderContent'][i].book.stock
         var cart = { id: e, bNum: a, name: b, price: c, stock: d, selected: true }
-        console.log(cart)
+
         newitems[i] = cart
       }
       this.items = newitems
+    },
+    formatitems () {
+      console.log(this.items)
+      var temp = this.backup[0]['orderContent']
+      this.backup[0]['orderContent'] = []
+      for (var i = 0; i < this.items.length; i++) {
+        if (this.items[i].selected) {
+          temp[i].bNum = this.items[i].bNum
+          this.backup[0]['orderContent'].push(temp[i])
+        }
+      }
+      this.backup[0]['totPrice'] = this.total_price()
+      return this.backup
     }
   }
 
