@@ -208,16 +208,20 @@ export default {
     buy () {
       console.log(this.total_price())
       var url = 'http://localhost:8080/cart_buy'
+      var items = this.formatitems()
+      if (items[0].orderContent.length === 0) {
+        alert('购物车为空')
+        return
+      }
       this.axios({
         headers: {
-
           'Access-Control-Allow-Origin': true,
           'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
         },
         method: 'post',
         url: url,
         data: this.$qs.stringify({
-          item: JSON.stringify(this.formatitems())
+          item: JSON.stringify(items)
         }, { arrayFormat: 'brackets' })
       })
         .then(response => {
@@ -234,6 +238,7 @@ export default {
       console.log(b)
       this.axios({
         headers: {
+          'Access-Control-Allow-Origin': true,
           'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
         },
         method: 'post',

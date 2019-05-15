@@ -54,21 +54,26 @@
                     color="blue"
                     @click="clear">clear</v-btn>
                 </form>
-</v-card></div></v-flex></v-layout></v-container></v-content></v-app></template>
+            </v-card></div>
+</v-flex></v-layout></v-container></v-content></v-app></template>
 
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, email, sameAs, minLength } from 'vuelidate/lib/validators'
-
+var pattern = new RegExp('^[a-zA-Z0-9_\u4e00-\u9fa5]+$')
+const customName = (value) => pattern.test(value) !== false
+var emailpattern = new RegExp('^[a-zA-Z0-9_@.\u4e00-\u9fa5]+$')
+const customEmail = (value) => emailpattern.test(value) !== false
 export default {
   mixins: [validationMixin],
 
   validations: {
-    name: { required, maxLength: maxLength(10) },
-    email: { required, email },
+    name: { required, maxLength: maxLength(10), customName },
+    email: { required, email,customEmail },
     password: {
       required,
-      minLength: minLength(6)
+      minLength: minLength(6),
+      customName
     },
     repeatPassword: {
       sameAsPassword: sameAs('password')
@@ -85,12 +90,11 @@ export default {
 
   computed: {
     nameErrors () {
-      var pattern = new RegExp('^[a-zA-Z0-9\u4e00-\u9fa5]+$')
       const errors = []
       if (!this.$v.name.$dirty) return errors
       !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
       !this.$v.name.required && errors.push('Name is required.')
-      !pattern.test(this.name) && errors.push('Name contains invalid characters.')
+      !this.$v.name.customName && errors.push('Name contains invalid characters.')
       return errors
     },
     emailErrors () {
@@ -98,6 +102,7 @@ export default {
       if (!this.$v.email.$dirty) return errors
       !this.$v.email.email && errors.push('Must be valid e-mail')
       !this.$v.email.required && errors.push('E-mail is required')
+      !this.$v.email.customEmail && errors.push('E-mail contains invalid characters.')
       return errors
     },
     passwordErrors () {
@@ -105,6 +110,7 @@ export default {
       if (!this.$v.password.$dirty) return errors
       !this.$v.password.required && errors.push('Password is required')
       !this.$v.password.minLength && errors.push('Password must be more than 6 words')
+      !this.$v.password.customName && errors.push('Password contains invalid characters.')
       !this.$v.repeatPassword.sameAsPassword && errors.push('Passwords must be identical.')
       return errors
     }
@@ -157,6 +163,7 @@ export default {
       this.password = ''
       this.repeatPassword = ''
     }
+
   }
 }
 </script>

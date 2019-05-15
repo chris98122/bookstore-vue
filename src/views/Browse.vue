@@ -180,17 +180,17 @@ export default {
           console.log(error)
         })
     },
-    move (b) {
+    move (id) {
       var url = 'http://localhost:8080/cart_movein'
-      console.log(b)
       this.axios({
         headers: {
+          'Access-Control-Allow-Origin': true,
           'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
         },
         method: 'post',
         url: url,
         data: this.$qs.stringify({
-          bid: b
+          bookid: id
         })
       })
         .then(response => {

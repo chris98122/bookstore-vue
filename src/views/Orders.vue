@@ -171,7 +171,7 @@
           </td >
           <td
             class="text-xs">
-            {{ item.buydate }}
+            {{ item.buydate.replace("T", " ").split('.')[0] }}
           </td>
           <td >
             {{ item.totPrice }}
