@@ -138,7 +138,7 @@ export default {
     ]
   }),
   mounted: function () {
-    var url = 'http://localhost:8080/browse'
+    var url = 'http://localhost:8080/book'
     this.axios({
       headers: {
         'Access-Control-Allow-Origin': true,

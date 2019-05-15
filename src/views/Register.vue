@@ -55,6 +55,19 @@
                     @click="clear">clear</v-btn>
                 </form>
             </v-card></div>
+            <v-footer class="pa-3">
+              <v-spacer/>
+              <div v-if="this.$root.logged" >
+                <v-text>您已经登录</v-text>
+                <v-btn
+                  slot="activator"
+                  class="v-btn--simple"
+                  color="danger"
+                  @click=" logout()"
+                >logout
+                </v-btn>
+              </div>
+            </v-footer>
 </v-flex></v-layout></v-container></v-content></v-app></template>
 
 <script>
@@ -69,7 +82,7 @@ export default {
 
   validations: {
     name: { required, maxLength: maxLength(10), customName },
-    email: { required, email,customEmail },
+    email: { required, email, customEmail },
     password: {
       required,
       minLength: minLength(6),
@@ -138,6 +151,7 @@ export default {
           .then(response => {
             console.log(response.data)
             if (response.data === '注册成功') {
+              this.$root.logged = true
               this.$router.push('/browse')
             } else if (response.data === '用户名已存在') {
               alert('用户名已存在')
@@ -162,6 +176,27 @@ export default {
       this.email = ''
       this.password = ''
       this.repeatPassword = ''
+    },
+    logout () {
+      this.axios({
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        method: 'post',
+        url: 'http://localhost:8080/logout',
+        data: this.$qs.stringify()
+      })
+        .then(response => {
+          console.log(response.data)
+          if (response.data === '登出') {
+            this.$root.isAdmin = false
+            this.$root.logged = false
+          }
+        })
+        .catch(error => {
+          JSON.stringify(error)
+          console.log(error)
+        })
     }
 
   }
