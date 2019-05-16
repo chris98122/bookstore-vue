@@ -52,8 +52,10 @@
             <td class="text-md-left">{{ item.id }}</td>
             <td class="right">
               <toggle-button
-                v-model="item.isActive"
-                :labels="{checked: '启用', unchecked: '禁用'}"/>
+                v-model="item.active"
+                :labels="{checked: '启用', unchecked: '禁用'}"
+              />
+
             </td>
 <td/></template></v-data-table></v-flex></v-layout></v-container></template>
 
@@ -76,27 +78,58 @@ export default {
       {
         sortable: false,
         text: 'Action',
-        value: 'isActive',
+        value: 'isactive',
         align: 'right'
       }
     ],
-    items: [
-    ]
+    items: []
   }),
-
+  watch: {
+    items: {
+      handler: function (newVal) {
+        for (let i = 0; i < newVal.length; i++) {
+          this.update(newVal[i])
+        }
+      },
+      deep: true // 深度监听
+    }
+  },
   mounted: function () {
-    var self = this
     var url = 'http://localhost:8080/manageuser'
     this.axios
       .get(url)
       .then(response => {
-        self.items = response.data
+        this.items = response.data
         console.log(response.data)
       })
       .catch(error => {
         JSON.stringify(error)
         console.log(error)
       })
+  },
+  methods: {
+    update (item) {
+      this.axios({
+        headers: {
+          'Access-Control-Allow-Origin': true,
+          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        method: 'post',
+        url: 'http://localhost:8080/ban_user',
+        data: this.$qs.stringify({
+          userid: item.id,
+          active: item.active
+        }),
+        withCredentials: true
+      }).then(response => {
+        console.log(response.data)
+      })
+        .catch(error => {
+          JSON.stringify(error)
+          console.log(error)
+        })
+    }
   }
 }
+
 </script>
