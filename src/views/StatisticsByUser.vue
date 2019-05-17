@@ -31,7 +31,6 @@
           :items="items"
           :search="search"
           class="elevation-1"
-          hide-actions
         >
           <template
             slot="headerCell"

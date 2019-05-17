@@ -71,7 +71,8 @@
                 <v-text-field
                   v-model="props.item.bNum"
                   required
-                  solo/>
+                  solo
+                  @change="checkBnum($event,props.item)"/>
               </td>
               <td :width="1">
                 <v-btn
@@ -185,6 +186,23 @@ export default {
       })
   },
   methods: {
+    checkBnum (e, item) {
+      console.log(e)
+      if (e === '') {
+        item.bNum = 1
+        return
+      }
+      if (e <= 0) {
+        item.bNum = 1
+        return
+      }
+      if (e > item.stock) {
+        item.bNum = item.stock
+        return
+      }
+      if (isNaN(e)) { alert('数值必须是数字！') }
+      item.stock = e.value
+    },
     toggleAll () {
       if (this.selected) {
         this.selected = false
@@ -206,6 +224,7 @@ export default {
       return sum
     },
     buy () {
+      if (isNaN(this.total_price())) { alert('数量必须是数字！') }
       console.log(this.total_price())
       var url = 'http://localhost:8080/cart_buy'
       var items = this.formatitems()
@@ -276,8 +295,10 @@ export default {
       this.backup[0]['orderContent'] = []
       for (var i = 0; i < this.items.length; i++) {
         if (this.items[i].selected) {
-          temp[i].bNum = this.items[i].bNum
-          this.backup[0]['orderContent'].push(temp[i])
+          if (this.items[i].bNum !== 0) {
+            temp[i].bNum = this.items[i].bNum
+            this.backup[0]['orderContent'].push(temp[i])
+          }
         }
       }
       this.backup[0]['totPrice'] = this.total_price()

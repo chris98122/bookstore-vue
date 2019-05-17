@@ -40,7 +40,6 @@
           :items="items"
           :search="search"
           class="elevation-1"
-          hide-actions
         >
           <template
             slot="headerCell"
@@ -88,6 +87,7 @@
                   slot="activator"
                   class="v-btn--simple"
                   icon
+                  @click="UpdateStock(item.id,item.stock)"
                 >
                   <v-icon color="blue">mdi-upload</v-icon>
                 </v-btn>
@@ -205,6 +205,30 @@ export default {
         JSON.stringify(error)
         console.log(error)
       })
-  }
+  },
+  methods:
+          {
+            UpdateStock (bid, stock) {
+              if (isNaN(stock)) { alert('库存必须是数字！') }
+              this.axios({
+                headers: {
+                  'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                method: 'post',
+                url: 'http://localhost:8080/update_stock',
+                data: this.$qs.stringify({
+                  bid: bid,
+                  stock: stock
+                })
+              })
+                .then(response => {
+                  console.log(response.data)
+                })
+                .catch(error => {
+                  JSON.stringify(error)
+                  console.log(error)
+                })
+            }
+          }
 }
 </script>
