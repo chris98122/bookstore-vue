@@ -8,18 +8,6 @@
       justify-center
       wrap
     >
-      <v-flex xs4>
-        <v-text-field
-          v-model="search2"
-          append-icon="search"
-          label="Search order time"
-          single-line
-          hide-details
-        >
-          <template slot="append">
-            <v-icon>mdi-magnify</v-icon>
-          </template>
-      </v-text-field></v-flex>
 
       <v-flex xs4>
         <v-text-field
@@ -35,72 +23,71 @@
       </v-text-field></v-flex>
       <v-flex
         md12
-      ><v-data-table
-        :headers="headers"
-        :items="orders"
-        :search="search"
-        :pagination.sync="pagination"
-        item-key="id"
-        class="elevation-1"
-        prev-icon="mdi-menu-left"
-        next-icon="mdi-menu-right"
-        sort-icon="mdi-menu-down"
       >
-        <template
-          slot="headerCell"
-          slot-scope="{ header }"
+        <v-data-table
+          :headers="headers"
+          :items="orders"
+          item-key="id"
+          class="elevation-1"
+          prev-icon="mdi-menu-left"
+          next-icon="mdi-menu-right"
+          sort-icon="mdi-menu-down"
         >
-          <span
-            class="subheading font-weight-light text-success text--darken-3"
-            v-text="header.text"
-          />
-        </template>
-        <template
-          slot="items"
-          slot-scope="{ item }"
-        >
-          <td>
-            {{ item.id }}
-          </td>
-          <td class="text-xs">
-            {{ item.buydate.replace("T", " ").split('.')[0] }}
-          </td>
+          <template
+            slot="headerCell"
+            slot-scope="{ header }"
+          >
+            <span
+              class="subheading font-weight-light text-success text--darken-3"
+              v-text="header.text"
+            />
+          </template>
+          <template
+            slot="items"
+            slot-scope="{ item }"
+          >
+            <td>
+              {{ item.id }}
+            </td>
+            <td class="text-xs">
+              {{ item.buydate.replace("T", " ").split('.')[0] }}
+            </td>
 
-          <td>
-            {{ item.totPrice }}
-          </td>
-          <td>
-            <tr
-              v-for="value in item.orderContent"
-              :key=" value.id">
-              {{ value["book"]["name"] }}
-            </tr>
-          </td>
-          <td>
-            <tr
-              v-for="value in item.items"
-              :key=" value.id">
+            <td>
+              {{ item.totPrice }}
+            </td>
+            <td>
+              <tr
+                v-for="value in item.orderContent"
+                :key=" value.id">
+                {{ value["book"]["name"] }}
+              </tr>
+            </td>
+            <td>
+              <tr
+                v-for="value in item.items"
+                :key=" value.id">
 
-              <img
-                :src="value.id"
-                width="40px">
-            </tr>
-          </td>
-          <td>
-            <tr
-              v-for="value in item.orderContent"
-              :key=" value.id">
-              {{ value["bNum"] }}
-            </tr>
-          </td>
-          <td>
-            <tr
-              v-for="value in item.orderContent"
-              :key=" value.id">
-              {{ value["book"]["price"] }}
-            </tr>
-          </td>
-        </template>
+                <img
+                  :src="value.id"
+                  width="40px">
+              </tr>
+            </td>
+            <td>
+              <tr
+                v-for="value in item.orderContent"
+                :key=" value.id">
+                {{ value["bNum"] }}
+              </tr>
+            </td>
+            <td>
+              <tr
+                v-for="value in item.orderContent"
+                :key=" value.id">
+                {{ value["book"]["price"] }}
+              </tr>
+            </td>
+          </template>
 </v-data-table></v-flex></v-layout></v-container></template>
 
 <script>
@@ -110,24 +97,24 @@ export default {
     publicPath: process.env.BASE_URL,
     headers: [
       {
-        sortable: false,
+        sortable: true,
         text: 'OrderID',
-        value: 'order_id'
+        value: 'id'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'OrderTime',
-        value: 'order_time'
+        value: 'buydate'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'TotalPrice',
-        value: 'total_price'
+        value: 'totPrice'
       },
       {
         sortable: false,
         text: 'BookName',
-        value: 'name'
+        value: 'orderContent'
       },
       {
         sortable: false,
@@ -137,16 +124,29 @@ export default {
       {
         sortable: false,
         text: 'Number',
-        value: 'number'
+        value: 'orderContent.bNum'
       },
       {
         sortable: false,
         text: 'Price',
-        value: 'price'
+        value: 'orderContent'
       }
     ],
-    orders: []
+    orders: [],
+    backup: []
   }),
+  watch:
+          {
+            search: function (val) {
+              if (val === '') this.orders = this.backup
+              for (var i = 0; i < this.orders.length; i++) {
+                if (this.orders[i].id === parseInt(val)) {
+                  this.orders = []
+                  this.orders.push(this.backup[i])
+                }
+              }
+            }
+          },
 
   mounted: function () {
     var url = 'http://localhost:8080/statistics_show'
@@ -154,6 +154,7 @@ export default {
       .get(url)
       .then(response => {
         this.orders = response.data
+        this.backup = response.data
         console.log(this.orders)
       })
       .catch(error => {

@@ -226,7 +226,7 @@ export default {
       {
         sortable: true,
         text: 'OrderTime',
-        value: 'date'
+        value: 'buydate'
       },
       {
         sortable: true,

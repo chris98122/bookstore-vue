@@ -31,7 +31,6 @@
           :items="items"
           :search="search"
           class="elevation-1"
-          hide-actions
         >
           <template
             slot="headerCell"
@@ -67,19 +66,19 @@ export default {
     publicPath: process.env.BASE_URL,
     headers: [
       {
-        sortable: false,
+        sortable: true,
         text: 'UserName',
         value: 'name'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'UserID',
         value: 'id'
       },
       {
         sortable: false,
         text: 'Action',
-        value: 'isactive',
+        value: 'active',
         align: 'right'
       }
     ],
