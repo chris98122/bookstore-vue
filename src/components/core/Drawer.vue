@@ -137,6 +137,11 @@ export default {
         text: 'Statistics'
       },
       {
+        to: '/StatisticsByUser',
+        icon: 'mdi-shopping',
+        text: 'StatisticsByUser'
+      },
+      {
         to: '/manage_user',
         icon: 'mdi-account',
         text: 'Manage User'

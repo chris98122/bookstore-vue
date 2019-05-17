@@ -50,13 +50,8 @@
               {{ item.name }}
             </td>
             <td class="text-md-left">{{ item.id }}</td>
-            <td class="right">
-              <toggle-button
-                :labels="{checked: '启用', unchecked: '禁用'}"
-                value="{{item.active}}"
-                @change="update($event,item)"
-              />
-
+            <td class="text-md-left">
+              {{ item.spending }}
             </td>
 <td/></template></v-data-table></v-flex></v-layout></v-container></template>
 
@@ -72,21 +67,20 @@ export default {
         value: 'name'
       },
       {
-        sortable: false,
+        sortable: true,
         text: 'UserID',
         value: 'id'
       },
       {
-        sortable: false,
-        text: 'Action',
-        value: 'isactive',
-        align: 'right'
+        sortable: true,
+        text: 'Total spending',
+        value: 'spending'
       }
     ],
     items: []
   }),
   mounted: function () {
-    var url = 'http://localhost:8080/manageuser'
+    var url = 'http://localhost:8080/statistics_by_user'
     this.axios
       .get(url)
       .then(response => {
@@ -99,28 +93,7 @@ export default {
       })
   },
   methods: {
-    update (e, item) {
-      item.active = e.value
-      this.axios({
-        headers: {
-          'Access-Control-Allow-Origin': true,
-          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-        },
-        method: 'post',
-        url: 'http://localhost:8080/ban_user',
-        data: this.$qs.stringify({
-          userid: item.id,
-          active: item.active
-        }),
-        withCredentials: true
-      }).then(response => {
-        console.log(response.data)
-      })
-        .catch(error => {
-          JSON.stringify(error)
-          console.log(error)
-        })
-    }
+
   }
 }
 

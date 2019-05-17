@@ -53,5 +53,11 @@ export default [
     path: '/manage_book',
     name: 'ManageBook',
     view: 'ManageBook'
+  },
+  {
+    path: '/StatisticsByUser',
+    name: 'StatisticsByUser',
+    view: 'StatisticsByUser'
   }
+
 ]

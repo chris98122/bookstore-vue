@@ -39,8 +39,12 @@
         :headers="headers"
         :items="orders"
         :search="search"
+        :pagination.sync="pagination"
+        item-key="id"
         class="elevation-1"
-        hide-actions
+        prev-icon="mdi-menu-left"
+        next-icon="mdi-menu-right"
+        sort-icon="mdi-menu-down"
       >
         <template
           slot="headerCell"
@@ -59,41 +63,42 @@
             {{ item.id }}
           </td>
           <td class="text-xs">
-            {{ item.time }}
+            {{ item.buydate.replace("T", " ").split('.')[0] }}
+          </td>
+
+          <td>
+            {{ item.totPrice }}
           </td>
           <td>
             <tr
-              v-for="value in item.items"
-              :key=" value.url">
-              {{ value["name"] }}
+              v-for="value in item.orderContent"
+              :key=" value.id">
+              {{ value["book"]["name"] }}
             </tr>
           </td>
           <td>
             <tr
               v-for="value in item.items"
-              :key=" value.url">
+              :key=" value.id">
 
               <img
-                :src="value.url"
+                :src="value.id"
                 width="40px">
             </tr>
           </td>
           <td>
             <tr
-              v-for="value in item.items"
-              :key=" value.url">
-              {{ value["number"] }}
+              v-for="value in item.orderContent"
+              :key=" value.id">
+              {{ value["bNum"] }}
             </tr>
           </td>
           <td>
             <tr
-              v-for="value in item.items"
-              :key=" value.url">
-              {{ value["price"] }}
+              v-for="value in item.orderContent"
+              :key=" value.id">
+              {{ value["book"]["price"] }}
             </tr>
-          </td>
-          <td>
-            {{ total_price(item.items) }}
           </td>
         </template>
 </v-data-table></v-flex></v-layout></v-container></template>
@@ -116,6 +121,11 @@ export default {
       },
       {
         sortable: false,
+        text: 'TotalPrice',
+        value: 'total_price'
+      },
+      {
+        sortable: false,
         text: 'BookName',
         value: 'name'
       },
@@ -133,71 +143,25 @@ export default {
         sortable: false,
         text: 'Price',
         value: 'price'
-      },
-      {
-        sortable: false,
-        text: 'TotalPrice',
-        value: 'total_price'
       }
     ],
-    orders: [
-      {
-        id: 1,
-        time: '2018-8-8 16:00',
-        items: [
-          {
-            name: 'javascript tutorial',
-            number: 1,
-            stock: 7,
-            price: 35,
-            url: '1.jpg'
-          },
-          {
-            name: 'javascript tutorial second version',
-            number: 1,
-            stock: 9,
-            price: 12,
-            url: '4.jpg'
-          }
-        ]
-      },
-      {
-        id: 2,
-        time: '2018-8-4 16:00',
-        items: [
-          {
-            name: 'javascript tutorial',
-            number: 1,
-            stock: 7,
-            price: 35,
-            url: '1.jpg'
-          },
-          {
-            name: 'javascript tutorial second version',
-            number: 1,
-            stock: 9,
-            price: 12,
-            url: '4.jpg'
-          },
-          {
-            name: 'Python Crash Course',
-            number: 2,
-            author: '埃里',
-            stock: 9,
-            ISBN: 9787115428028,
-            price: 10,
-            url: '2.jpg'
-          }
-        ]
-      }
-    ]
+    orders: []
   }),
+
+  mounted: function () {
+    var url = 'http://localhost:8080/statistics_show'
+    this.axios
+      .get(url)
+      .then(response => {
+        this.orders = response.data
+        console.log(this.orders)
+      })
+      .catch(error => {
+        JSON.stringify(error)
+        console.log(error)
+      })
+  },
   methods: {
-    total_price (items) {
-      var sum = 0
-      for (var i = 0; i < items.length; i++) { sum += items[i].number * items[i].price }
-      return sum
-    }
   }
 
 }

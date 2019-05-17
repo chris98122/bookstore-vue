@@ -94,7 +94,7 @@
                 <span>submit</span>
               </v-tooltip>
             </td>
-            <td class="text-xs">{{ item.ISBN }}</td>
+            <td class="text-xs">{{ item.isbn }}</td>
 
             <td >
               <v-text-field
@@ -130,7 +130,7 @@
                 <span>Off Shelf</span>
               </v-tooltip>
             </td>
-</template></v-data-table></v-flex></v-flex></v-layout></v-container></template>
+</template></v-data-table></v-flex></v-layout></v-container></template>
 
 <script>
 export default {
@@ -185,32 +185,26 @@ export default {
         align: 'right'
       }
     ],
-    items: [
-      {
-        name: 'javascript tutorial',
-        author: 'author one',
-        stock: 7,
-        ISBN: 9787111216332,
-        price: 35,
-        url: '1.jpg'
+    items: []
+  }),
+  mounted: function () {
+    var url = 'http://localhost:8080/book'
+    this.axios({
+      headers: {
+        'Access-Control-Allow-Origin': true,
+        'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       },
-      {
-        name: 'javascript tutorial second version',
-        author: 'author two',
-        stock: 9,
-        ISBN: 9787111216322,
-        price: 12,
-        url: '4.jpg'
-      },
-      {
-        name: 'Python Crash Course',
-        author: '埃里',
-        stock: 9,
-        ISBN: 9787115428028,
-        price: 10,
-        url: '2.jpg'
-      }
-    ]
-  })
+      method: 'get',
+      url: url
+    })
+      .then(response => {
+        this.items = response.data
+        console.log(response.data)
+      })
+      .catch(error => {
+        JSON.stringify(error)
+        console.log(error)
+      })
+  }
 }
 </script>

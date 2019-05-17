@@ -1,97 +1,70 @@
 <template>
-  <v-form v-model="valid">
-    <v-container py-0>
-      <v-layout wrap>
-        <v-flex
-          xs12
-          md3
-        >
+  <v-app>
+    <v-content>
+      <v-container>
+        <v-layout
+          align-center >
+          <v-flex
+            xs6
+            sm
+            md>
+            <div v-if="this.$root.logged">
+              <v-card class="px-3 pb-4">
+                <form>
+                  <v-text-field
+                    v-model="Bookname"
+                    class="purple-input"
+                    label="Bookname"
+                    required
+                  />
+                  <v-text-field
+                    v-model="authorname"
+                    class="purple-input"
+                    label="author name"
+                    required
+                  />
+                  <v-text-field
+                    v-model="stock"
+                    class="purple-input"
+                    label="stock"
+                    required
+                  />
+                  <v-text-field
+                    v-model="price"
+                    class="purple-input"
+                    label="price"
+                    required
+                  />
+                  <v-text-field
+                    v-model="ISBN"
+                    class="purple-input"
+                    label="ISBN"
+                    required
+                  />
 
-          <v-text-field
-            v-model="Bookname"
-            class="purple-input"
-            label="Bookname"
-            required
-          />
-        </v-flex>
+                  <v-btn
+                    color="blue"
+                    @click="submit">submit</v-btn>
 
-        <v-flex
-          xs12
-          md3
-        >
-          <v-text-field
-            v-model="authorname"
-            class="purple-input"
-            label="author name"
-            required
-          />
-        </v-flex>
-
-        <v-flex
-          xs12
-          md3
-        >
-          <v-text-field
-            v-model="stock"
-            class="purple-input"
-            label="stock"
-            required
-          />
-        </v-flex>
-        <v-flex
-          xs12
-          md3
-        >
-          <v-text-field
-            v-model="price"
-            class="purple-input"
-            label="price"
-            required
-          />
-        </v-flex>
-        <v-flex
-          xs12
-          md3
-        >
-          <v-text-field
-            v-model="ISBN"
-            class="purple-input"
-            label="ISBN"
-            required
-          />
-        </v-flex>
-
-        <v-flex
-          xs12
-          md3
-        >
-          <vue-core-image-upload
-            :crop="false"
-            :data="data"
-            :max-file-size="5242880"
-            url=""
-            @imageuploaded="imageuploaded" >
-            <v-btn
-              large
-              color="primary">上传图片
-          </v-btn></vue-core-image-upload>
-        </v-flex>
-
-        <v-flex
-          xs12
-          md3
-        >
-          <v-btn
-            class="mx-0 font-weight-light"
-            color="primary"
-          >
-            上架
-          </v-btn>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-form>
-</template>
+                  <v-btn
+                    color="blue"
+                    @click="clear">clear</v-btn>
+                  <v-btn
+                    color="blue">
+                    <vue-core-image-upload
+                      :crop="false"
+                      :data="data"
+                      :max-file-size="5242880"
+                      url=""
+                      @imageuploaded="imageuploaded" />
+                  </v-btn>
+                </form>
+            </v-card></div>
+            <v-footer class="pa-3">
+              <v-spacer/>
+            </v-footer>
+      </v-flex></v-layout></v-container>
+</v-content></v-app></template>
 
 <script>
 import VueCoreImageUpload from 'vue-core-image-upload'
