@@ -52,8 +52,8 @@
             <td class="text-md-left">{{ item.id }}</td>
             <td class="right">
               <toggle-button
-                v-model="item.active"
                 :labels="{checked: '启用', unchecked: '禁用'}"
+                @change="update($event,item)"
               />
 
             </td>
@@ -84,16 +84,6 @@ export default {
     ],
     items: []
   }),
-  watch: {
-    items: {
-      handler: function (newVal) {
-        for (let i = 0; i < newVal.length; i++) {
-          this.update(newVal[i])
-        }
-      },
-      deep: true // 深度监听
-    }
-  },
   mounted: function () {
     var url = 'http://localhost:8080/manageuser'
     this.axios
@@ -108,7 +98,8 @@ export default {
       })
   },
   methods: {
-    update (item) {
+    update (e, item) {
+      item.active = e.value
       this.axios({
         headers: {
           'Access-Control-Allow-Origin': true,
