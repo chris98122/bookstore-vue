@@ -203,7 +203,11 @@ export default {
           method: 'post',
           url: 'http://localhost:8080/onshelf',
           data: this.$qs.stringify({
-            name: this.name
+            name: this.name,
+            author: this.author,
+            stock: this.stock,
+            isbn: this.isbn,
+            price: this.price
           })
         })
           .then(response => {
@@ -215,16 +219,16 @@ export default {
             console.log(error)
           })
       }
-    }
-  },
-  clear () {
-    this.$v.$reset()
-    this.item.name = ''
-    this.item.author = ''
-    this.item.stock = ''
-    this.item.isbn = ''
-    this.item.price = ''
-  }
+    },
 
+    clear () {
+      this.$v.$reset()
+      this.name = ''
+      this.author = ''
+      this.stock = ''
+      this.isbn = ''
+      this.price = ''
+    }
+  }
 }
 </script>

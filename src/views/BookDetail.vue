@@ -13,14 +13,16 @@
         >{{ this.$route.params.name }}</h3>
 
         <p class="body-1">{{ this.$route.params.author }}</p>
-        <p class="body-1">stock:{{ this.$route.params.stock }}</p>
+        <p class="body-1">库存:{{ this.$route.params.stock }}</p>
         <p class="body-1">ISBN:{{ this.$route.params.isbn }}</p>
-        <p class="body-1">${{ this.$route.params.price }}</p>
+        <p class="body-1">出版社：{{ this.$route.params.publisher }}</p>
+        <p class="body-1">字数：{{ this.$route.params.words }}</p>
 
+        <p class="body-1">￥{{ this.$route.params.price }}</p>
         <v-btn
           color="error"
           class="v-btn"
-          @click="move(this.$route.params.id)"
+          @click="move()"
         >
           Move in cart
           <v-icon
@@ -30,7 +32,7 @@
 
       </v-flex>
       <v-flex
-        xs4>
+        xs12>
         <v-text>{{ this.$route.params.detail }}</v-text>
       </v-flex>
 </v-layout></v-container></template>
@@ -44,20 +46,20 @@ export default {
   mounted: function () {
     console.log(this.$route.params)
   },
-  method:
+  methods:
           {
-
-            move (b) {
+            move () {
               var url = 'http://localhost:8080/cart_movein'
-              console.log(b)
+              console.log(this.$route.params.id)
               this.axios({
                 headers: {
+                  'Access-Control-Allow-Origin': true,
                   'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
                 },
                 method: 'post',
                 url: url,
                 data: this.$qs.stringify({
-                  bid: b
+                  bookid: this.$route.params.id
                 })
               })
                 .then(response => {

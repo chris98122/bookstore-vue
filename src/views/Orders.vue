@@ -95,12 +95,15 @@
         </div>
       </v-flex>
       <v-flex
-        xs4>
-        <p v-if="searched">您在{{ date }}至{{ date2 }}这段时间一共消费了￥{{ spending }}</p>
+        xs2>
         <v-btn
           color="blue"
           small
           @click="searchdate(date,date2)">search by time</v-btn>
+      </v-flex>
+      <v-flex
+        xs2>
+        <p v-if="searched">您在{{ date }}至{{ date2 }}这段时间一共消费了￥{{ spending }}</p>
       </v-flex>
       <v-flex xs4 >
         <v-text-field
@@ -111,18 +114,6 @@
         />
       </v-flex>
       <v-flex xs4 >
-        <v-btn
-          color="blue"
-          small
-          @click="searchID(search)">search by ID</v-btn>
-      </v-flex>
-      <v-flex xs4 >
-        <v-btn
-          color="blue"
-          small
-          @click="showall()">显示全部订单</v-btn>
-      </v-flex>
-      <v-flex xs4 >
         <v-text-field
           v-model="searchbook"
           label="Search By Bookname"
@@ -130,11 +121,12 @@
           hide-details
         />
       </v-flex>
+
       <v-flex xs4 >
         <v-btn
           color="blue"
           small
-          @click="searchBook(searchbook)">search by Bookname</v-btn>
+          @click="showall()">显示全部订单</v-btn>
       </v-flex>
       <template slot="append">
         <v-icon>mdi-magnify</v-icon>
@@ -214,8 +206,6 @@ export default {
     menu: false,
     date2: new Date().toISOString().substr(0, 10),
     menu2: false,
-    search: '',
-    searchbook: '',
     publicPath: process.env.BASE_URL,
     headers: [
       {
@@ -258,16 +248,42 @@ export default {
     ],
     ordersbackup: [
     ],
-    spending: 0
+    spending: 0,
+    search: '',
+    searchbook: ''
   }),
-  computed: {
-    computedDateFormatted () {
-      return this.formatDate(this.date)
+
+  watch:
+{
+  search: function (val) {
+    if (val === '') {
+      this.orders = this.ordersbackup
+      return
+    }
+    for (var i = 0; i < this.ordersbackup.length; i++) {
+      if (this.ordersbackup[i].id === parseInt(val)) {
+        this.orders = []
+        this.orders.push(this.ordersbackup[i])
+      }
     }
   },
 
-  watch: {
-  },
+  searchbook: function (val) {
+    if (val === '') {
+      this.orders = this.ordersbackup
+      return
+    }
+
+    this.orders = []
+    for (var j = 0; j < this.ordersbackup.length; j++) {
+      for (var i = 0; i < this.ordersbackup[j].orderContent.length; i++) {
+        if (this.ordersbackup[j].orderContent[i].book.name === val) {
+          this.orders.push(this.ordersbackup[j])
+        }
+      }
+    }
+  }
+},
   mounted: function () {
     var url = 'http://localhost:8080/orders_show'
     this.axios
@@ -288,29 +304,34 @@ export default {
   },
 
   methods: {
+    format (date) {
+      var arr = date.split('-')
+      var starttime = new Date(arr[0], arr[1], arr[2])
+      var starttimes = starttime.getTime()
+      return starttimes
+    },
     searchdate (date, date2) {
-      this.axios({
-        headers: {
-          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-        },
-        method: 'post',
-        url: 'http://localhost:8080/order_search',
-        data: this.$qs.stringify({
-          startdate: date,
-          enddate: date2
-        })
-      })
-        .then(response => {
-          this.orders = response.data
-          this.searched = true
-          this.spending = this.calsum()
-          console.log(response.data)
-          console.log(this.spending)
-        })
-        .catch(error => {
-          JSON.stringify(error)
-          console.log(error)
-        })
+      var starttime = this.format(date)
+      var endtime = this.format(date2)
+      if (starttime > endtime) {
+        this.showall()
+        alert('开始时间不能大于结束时间')
+        return
+      }
+
+      this.searched = true
+      this.orders = []
+      this.spending = 0
+      for (let i = 0; i < this.ordersbackup.length; i++) {
+        var orderdate = this.format(this.ordersbackup[i].buydate.split('T')[0])
+
+        if (orderdate >= starttime && orderdate <= endtime) {
+          console.log(this.ordersbackup[i].buydate + '>=' + date)
+          console.log(this.ordersbackup[i].buydate + '<=' + date2)
+          this.orders.push(this.ordersbackup[i])
+          this.spending += this.ordersbackup[i].totPrice
+        }
+      }
     },
     searchID (id) {
       var newitems = []
@@ -324,18 +345,6 @@ export default {
         }
       }
     },
-    searchBook (bookname) {
-      var newitems = []
-      this.orders = this.ordersbackup
-      for (var i = 0; i < this.orders.length; i++) {
-        for (var j = 0; j < this.orders[i]['orderContent'].length; j++) {
-          if (this.orders[i]['orderContent'][j].book.name === bookname) {
-            newitems.push(this.orders[i])
-          }
-        }
-      }
-      this.orders = newitems
-    },
     calsum () {
       var sum = 0
       for (var i = 0; i < this.orders.length; i++) {
@@ -344,6 +353,7 @@ export default {
       return sum
     },
     showall () {
+      this.searched = false
       this.orders = this.ordersbackup
     },
     getDate () {

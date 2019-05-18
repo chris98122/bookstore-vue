@@ -52,6 +52,21 @@
             <td class="text-md-left">
               {{ item.spending }}
             </td>
+
+            <td class="text-md-left">
+              <tr
+                v-for="value in item.orders"
+                :key=" value.id">
+                {{ value['id'] }}
+              </tr>
+            </td>
+            <td class="text-md-left">
+              <tr
+                v-for="value in item.orders"
+                :key=" value.id">
+                {{ value['totPrice'] }}
+              </tr>
+            </td>
 <td/></template></v-data-table></v-flex></v-layout></v-container></template>
 
 <script>
@@ -61,7 +76,7 @@ export default {
     publicPath: process.env.BASE_URL,
     headers: [
       {
-        sortable: false,
+        sortable: true,
         text: 'UserName',
         value: 'name'
       },
@@ -71,9 +86,20 @@ export default {
         value: 'id'
       },
       {
-        sortable: true,
+        sortable: false,
         text: 'Total spending',
         value: 'spending'
+      },
+      {
+        sortable: false,
+        text: 'orderID',
+        value: 'id'
+      },
+      {
+        sortable: false,
+        text: 'orderprice',
+        value: 'id'
+
       }
     ],
     items: []
@@ -85,6 +111,7 @@ export default {
       .then(response => {
         this.items = response.data
         console.log(response.data)
+        this.items = this.format()
       })
       .catch(error => {
         JSON.stringify(error)
@@ -92,7 +119,20 @@ export default {
       })
   },
   methods: {
-
+    format () {
+      var items = []
+      for (var i = 0; i < this.items.length; i++) {
+        var propertys = Object.getOwnPropertyNames(this.items[i])
+        for (let j = 0; j < propertys.length; j++) {
+          if (propertys[j] !== '__ob__') {
+            var user = JSON.parse(propertys[j])
+            user.orders = this.items[i][propertys[j]]
+            items.push(user)
+          }
+        }
+      }
+      return items
+    }
   }
 }
 

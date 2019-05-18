@@ -49,7 +49,7 @@
             <td
               class="text-lg-left"
               width="200px"
-              @click="getdetail( item.id)"
+              @click="getdetail( item)"
             >
               {{ item.name }}</td>
             <td>
@@ -157,29 +157,12 @@ export default {
       })
   },
   methods: {
-    getdetail (bid) {
-      console.log('clicked')
-      var url = 'http://localhost:8080/bookdetail'
-      this.axios({
-        headers: {
-          'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Origin': true,
-          'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-        },
-        method: 'post',
-        url: url,
-        data: this.$qs.stringify({ id: bid })
-      })
-        .then(response => {
-          this.items = response.data
-          this.$router.push({ name: 'Detail', params: this.items[0] })
-          console.log(response.data)
-        })
-        .catch(error => {
-          JSON.stringify(error)
-          console.log(error)
-        })
+    getdetail (item) {
+      console.log(item)
+      console.log(JSON.stringify(item))
+      this.$router.push({ name: 'Detail', params: item })
     },
+
     move (id) {
       var url = 'http://localhost:8080/cart_movein'
       this.axios({
@@ -203,4 +186,5 @@ export default {
     }
   }
 }
+
 </script>

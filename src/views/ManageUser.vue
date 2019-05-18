@@ -52,7 +52,7 @@
             <td class="right">
               <toggle-button
                 :labels="{checked: '启用', unchecked: '禁用'}"
-                value="{{item.active}}"
+                v-model="item.active"
                 @change="update($event,item)"
               />
 
@@ -99,6 +99,7 @@ export default {
   },
   methods: {
     update (e, item) {
+      console.log(e)
       item.active = e.value
       this.axios({
         headers: {

@@ -122,7 +122,7 @@
             <td class="right">
               <toggle-button
                 :labels="{checked: '上架', unchecked: '下架'}"
-                value="{{item.upshelf}}"
+                v-model="item.upshelf"
                 @change="update_shelf($event,item)"
               />
             </td>
