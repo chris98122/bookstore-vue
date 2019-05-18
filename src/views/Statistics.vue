@@ -84,7 +84,7 @@
               <tr
                 v-for="value in item.orderContent"
                 :key=" value.id">
-                {{ value["book"]["price"] }}
+                {{ value["price"] }}
               </tr>
             </td>
           </template>

@@ -42,7 +42,7 @@
             />
           </template>
           <template
-            v-if=" item.stock!=0"
+            v-if=" item.stock!=0 &&item.upshelf === true"
             slot="items"
             slot-scope="{ item }"
           >

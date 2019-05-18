@@ -163,7 +163,6 @@ export default {
             JSON.stringify(error)
             console.log(error)
           })
-        // do your submit logic here
         this.submitStatus = 'PENDING'
         setTimeout(() => {
           this.submitStatus = 'OK'

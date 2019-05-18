@@ -102,33 +102,29 @@
                 required
                 solo/>
             </td>
+
             <td>
               <v-tooltip
                 top
                 content-class="top">
                 <v-btn
                   slot="activator"
-                  class="v-btn--simple right"
+                  class="v-btn--simple"
                   icon
+                  @click="UpdatePrice(item.id,item.price)"
                 >
                   <v-icon color="blue">mdi-upload</v-icon>
                 </v-btn>
                 <span>submit</span>
               </v-tooltip>
             </td>
-            <td>
-              <v-tooltip
-                top
-                content-class="top">
-                <v-btn
-                  slot="activator"
-                  class="v-btn--simple right"
-                  icon
-                >
-                  <v-icon color="blue">mdi-download</v-icon>
-                </v-btn>
-                <span>Off Shelf</span>
-              </v-tooltip>
+
+            <td class="right">
+              <toggle-button
+                :labels="{checked: '上架', unchecked: '下架'}"
+                value="{{item.upshelf}}"
+                @change="update_shelf($event,item)"
+              />
             </td>
 </template></v-data-table></v-flex></v-layout></v-container></template>
 
@@ -181,7 +177,7 @@ export default {
       {
         sortable: false,
         text: 'Action',
-        value: 'action',
+        value: 'upshelf',
         align: 'right'
       }
     ],
@@ -209,7 +205,14 @@ export default {
   methods:
           {
             UpdateStock (bid, stock) {
-              if (isNaN(stock)) { alert('库存必须是数字！') }
+              if (isNaN(stock)) {
+                alert('库存必须是数字！')
+                return
+              }
+              if (stock < 0) {
+                alert('库存必须是大于等于零的数字！')
+                return
+              }
               this.axios({
                 headers: {
                   'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -222,8 +225,64 @@ export default {
                 })
               })
                 .then(response => {
+                  alert(response.data)
                   console.log(response.data)
                 })
+                .catch(error => {
+                  JSON.stringify(error)
+                  console.log(error)
+                })
+            },
+            UpdatePrice (bid, price) {
+              if (isNaN(price)) {
+                alert('价格必须是数字！')
+                return
+              }
+              if (price < 0) {
+                alert('价格必须是大于等于零的数字！')
+                return
+              }
+              if (!/^\d+(\.\d{1,2})?$/.test(price)) {
+                alert('价格必须是精度为两位小数以内的正数！')
+                return
+              }
+              this.axios({
+                headers: {
+                  'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                method: 'post',
+                url: 'http://localhost:8080/update_price',
+                data: this.$qs.stringify({
+                  bid: bid,
+                  price: price
+                })
+              })
+                .then(response => {
+                  alert(response.data)
+                  console.log(response.data)
+                })
+                .catch(error => {
+                  JSON.stringify(error)
+                  console.log(error)
+                })
+            },
+            update_shelf (e, item) {
+              item.upshelf = e.value
+              this.axios({
+                headers: {
+                  'Access-Control-Allow-Origin': true,
+                  'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                method: 'post',
+                url: 'http://localhost:8080/update_shelf',
+                data: this.$qs.stringify({
+                  bid: item.id,
+                  upshelf: item.upshelf
+                }),
+                withCredentials: true
+              }).then(response => {
+                console.log(response.data)
+              })
                 .catch(error => {
                   JSON.stringify(error)
                   console.log(error)
