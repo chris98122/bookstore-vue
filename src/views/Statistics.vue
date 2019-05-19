@@ -131,19 +131,7 @@
           </template>
         </v-text-field>
       </v-flex>
-      <v-flex xs3 >
-        <v-text-field
-          v-model="searchuser"
-          label="Search By UserID"
-          append-icon="search"
-          single-line
-          hide-details
-        >
-          <template slot="append">
-            <v-icon>mdi-magnify</v-icon>
-          </template>
-        </v-text-field>
-      </v-flex>
+
       <v-flex xs3 >
         <v-btn
           color="blue"

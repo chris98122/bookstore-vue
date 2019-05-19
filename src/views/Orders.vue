@@ -163,7 +163,7 @@
           </td >
           <td
             class="text-xs">
-            {{ item.buydate.replace("T", " ").split('.')[0] }}
+            {{ new Date(item.buydate) }}
           </td>
           <td >
             {{ item.totPrice }}
@@ -323,7 +323,10 @@ export default {
       this.orders = []
       this.spending = 0
       for (let i = 0; i < this.ordersbackup.length; i++) {
-        var orderdate = this.format(this.ordersbackup[i].buydate.split('T')[0])
+        var d = new Date(this.ordersbackup[i].buydate)
+        var date_value = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+
+        var orderdate = this.format(date_value.substr(0, 10))
 
         if (orderdate >= starttime && orderdate <= endtime) {
           console.log(this.ordersbackup[i].buydate + '>=' + date)

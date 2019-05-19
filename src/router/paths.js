@@ -58,6 +58,11 @@ export default [
     path: '/StatisticsByUser',
     name: 'StatisticsByUser',
     view: 'StatisticsByUser'
+  },
+  {
+    path: '/chart',
+    name: 'Dashboard',
+    view: 'Dashboard'
   }
 
 ]

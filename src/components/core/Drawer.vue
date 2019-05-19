@@ -155,6 +155,11 @@ export default {
         to: '/on_shelf',
         icon: 'mdi-book',
         text: 'On Shelf'
+      },
+      {
+        to: '/chart',
+        icon: 'mdi-book',
+        text: 'chart'
       }],
     responsive: false
   }),

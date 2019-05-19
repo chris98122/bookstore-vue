@@ -9,27 +9,28 @@
       justify-center
       wrap
     >
-      <v-flex md12>
+      <v-flex xs4 >
         <v-text-field
-          v-model="search"
+          v-model="searchuser"
+          label="Search By UserID"
           append-icon="search"
-          label="Search"
           single-line
           hide-details
         >
-
           <template slot="append">
             <v-icon>mdi-magnify</v-icon>
           </template>
-      </v-text-field></v-flex>
+        </v-text-field>
+      </v-flex>
+      <v-flex xs4 />
+      <v-flex xs4 />
       <v-flex
-        md12
+        xs4
       >
 
         <v-data-table
           :headers="headers"
           :items="items"
-          :search="search"
           class="elevation-1"
         >
           <template
@@ -45,10 +46,14 @@
             slot="items"
             slot-scope="{ item }"
           >
-            <td class="text-md-left">
+            <td
+              class="text-xs-left"
+              @click="showorders(item)">
               {{ item.name }}
             </td>
-            <td class="text-md-left">{{ item.id }}</td>
+            <td
+              class="text-md-left"
+              @click="showorders(item)">{{ item.id }}</td>
             <td class="text-md-left">
               {{ item.spending }}
             </td>
@@ -60,49 +65,149 @@
                 {{ value['id'] }}
               </tr>
             </td>
-            <td class="text-md-left">
+            <td class="text-xs-left">
               <tr
                 v-for="value in item.orders"
                 :key=" value.id">
                 {{ value['totPrice'] }}
               </tr>
             </td>
-<td/></template></v-data-table></v-flex></v-layout></v-container></template>
+      <td/></template></v-data-table></v-flex>
+      <v-flex
+        xs8
+      >
+
+        <v-data-table
+          :headers="headers2"
+          :items="orders"
+
+          :pagination.sync="pagination"
+          item-key="id"
+          class="elevation-1"
+          prev-icon="mdi-menu-left"
+          next-icon="mdi-menu-right"
+          sort-icon="mdi-menu-down"
+        >
+          <template
+            slot="headerCell"
+            slot-scope="{ header }"
+          >
+            <span
+              class="subheading font-weight-light text-success text--darken-3"
+              v-text="header.text"
+            />
+          </template>
+
+          <template
+            slot="items"
+            slot-scope="{ item }"
+          >
+            <td >
+              {{ item.id }}
+            </td >
+            <td
+              class="text-xs">
+              {{ item.buydate }}
+            </td>
+            <td >
+              {{ item.totPrice }}
+            </td>
+            <td>
+              <tr
+                v-for="value in item.orderContent"
+                :key=" value.id">
+                {{ value["book"]["name"] }}
+              </tr>
+            </td>
+            <td/>
+            <td>
+              <tr
+                v-for="value in item.orderContent"
+                :key=" value.id">
+                {{ value["bNum"] }}
+              </tr>
+            </td>
+            <td>
+              <tr
+                v-for="value in item.orderContent"
+                :key=" value.id">
+                {{ value["price"] }}
+              </tr>
+            </td>
+          </template>
+</v-data-table></v-flex></v-layout></v-container></template>
 
 <script>
 export default {
   data: () => ({
-    search: '',
     publicPath: process.env.BASE_URL,
     headers: [
       {
         sortable: true,
-        text: 'UserName',
+        text: 'name',
         value: 'name'
       },
       {
         sortable: true,
-        text: 'UserID',
+        text: 'uID',
         value: 'id'
       },
       {
         sortable: false,
-        text: 'Total spending',
+        text: 'tot',
         value: 'spending'
       },
       {
         sortable: false,
-        text: 'orderID',
+        text: 'oID',
         value: 'id'
       },
       {
         sortable: false,
-        text: 'orderprice',
+        text: 'price',
         value: 'id'
-
       }
     ],
-    items: []
+    headers2: [
+      {
+        sortable: true,
+        text: 'oID',
+        value: 'id'
+      },
+      {
+        sortable: true,
+        text: 'Time',
+        value: 'buydate'
+      },
+      {
+        sortable: true,
+        text: 'tot',
+        value: 'totPrice'
+      },
+      {
+        sortable: false,
+        text: 'BookName',
+        value: 'name'
+      },
+      {
+        sortable: false,
+        text: 'BookPic',
+        value: 'pic'
+      },
+      {
+        sortable: false,
+        text: 'num',
+        value: 'bNum'
+      },
+      {
+        sortable: false,
+        text: '￥',
+        value: 'price'
+      }
+    ],
+    items: [],
+    orders: [],
+    searchuser: ''
   }),
   mounted: function () {
     var url = 'http://localhost:8080/statistics_by_user'
@@ -132,6 +237,10 @@ export default {
         }
       }
       return items
+    },
+    showorders (item) {
+      console.log(item.orders)
+      this.orders = item.orders
     }
   }
 }
