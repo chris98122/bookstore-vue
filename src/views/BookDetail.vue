@@ -20,6 +20,7 @@
 
         <p class="body-1">￥{{ this.$route.params.price }}</p>
         <v-btn
+          v-if="!this.$root.isAdmin"
           color="error"
           class="v-btn"
           @click="move()"

@@ -52,6 +52,30 @@
                     @input="$v.isbn.$touch()"
                     @blur="$v.isbn.$touch()"
                   />
+                  <v-text-field
+                    v-model="detail"
+                    :error-messages="detailErrors"
+                    label="detail"
+                    required
+                    @input="$v.detail.$touch()"
+                    @blur="$v.detail.$touch()"
+                  />
+                  <v-text-field
+                    v-model="publisher"
+                    :error-messages="publisherErrors"
+                    label="publisher"
+                    required
+                    @input="$v.publisher.$touch()"
+                    @blur="$v.publisher.$touch()"
+                  />
+                  <v-text-field
+                    v-model="words"
+                    :error-messages="wordsErrors"
+                    label="words"
+                    required
+                    @input="$v.words.$touch()"
+                    @blur="$v.words.$touch()"
+                  />
 
                   <v-btn
                     color="blue"
@@ -85,8 +109,8 @@ import { required } from 'vuelidate/lib/validators'
 var PricePattern = new RegExp(/^\d+(\.\d{1,2})?$/)
 
 var IsPositiveInt = new RegExp(/^[1-9]*[1-9][0-9]*$/)
-var isbn10 = new RegExp(/^[1-9]{10}$/)
-var isbn13 = new RegExp(/^[1-9]{13}$/)
+var isbn10 = new RegExp(/^[0-9]{10}$/)
+var isbn13 = new RegExp(/^[0-9]{13}$/)
 const PriceRule = (value) => PricePattern.test(value) !== false
 const StockRule = (value) => IsPositiveInt.test(value) !== false
 
@@ -104,54 +128,22 @@ export default {
     author: { required },
     stock: { required, StockRule },
     isbn: { required, isbnRule },
-    price: { required, PriceRule }
+    price: { required, PriceRule },
+    detail: { required },
+    publisher: { required },
+    words: { required, StockRule }
   },
   data: () => ({
     src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
     data: '',
-    headers: [
-      {
-        sortable: true,
-        text: 'BookName',
-        value: 'name'
-      },
-      {
-        sortable: false,
-        text: 'BookPic',
-        value: 'pic'
-      },
-      {
-        sortable: true,
-        text: 'Author',
-        value: 'author'
-      },
-      {
-        sortable: false,
-        text: 'Stock',
-        value: 'stock'
-      },
-      {
-        sortable: true,
-        text: 'ISBN',
-        value: 'isbn'
-      },
-      {
-        sortable: false,
-        text: 'Price',
-        value: 'price'
-      },
-      {
-        sortable: false,
-        text: 'Action',
-        value: 'action',
-        align: 'right'
-      }
-    ],
     name: '',
     author: '',
     stock: '',
     isbn: '',
     price: '',
+    detail: '',
+    publisher: '',
+    words: '',
     submitStatus: null
   }),
   computed: {
@@ -175,6 +167,13 @@ export default {
       !this.$v.stock.StockRule && errors.push('库存必须是正整数！')
       return errors
     },
+    wordsErrors () {
+      const errors = []
+      if (!this.$v.words.$dirty) return errors
+      !this.$v.words.required && errors.push('words is required.')
+      !this.$v.words.StockRule && errors.push('字数必须是正整数！')
+      return errors
+    },
     isbnErrors () {
       const errors = []
       if (!this.$v.isbn.$dirty) return errors
@@ -186,6 +185,18 @@ export default {
       const errors = []
       if (!this.$v.author.$dirty) return errors
       !this.$v.author.required && errors.push('Author is required.')
+      return errors
+    },
+    detailErrors () {
+      const errors = []
+      if (!this.$v.detail.$dirty) return errors
+      !this.$v.detail.required && errors.push('Detail required.')
+      return errors
+    },
+    publisherErrors () {
+      const errors = []
+      if (!this.$v.publisher.$dirty) return errors
+      !this.$v.publisher.required && errors.push(' publisher required.')
       return errors
     }
   },
@@ -207,7 +218,10 @@ export default {
             author: this.author,
             stock: this.stock,
             isbn: this.isbn,
-            price: this.price
+            price: this.price,
+            detail: this.detail,
+            publisher: this.publisher,
+            words: this.words
           })
         })
           .then(response => {
@@ -228,6 +242,9 @@ export default {
       this.stock = ''
       this.isbn = ''
       this.price = ''
+      this.detail = ''
+      this.publisher = ''
+      this.words = ''
     }
   }
 }

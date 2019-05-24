@@ -56,13 +56,10 @@
           >
             <td
               class="text-lg-left"
-              width="200px">
-
-              <router-link
-                to="/book_detail"
-              >
-                {{ item.name }}
-            </router-link></td>
+              width="200px"
+              @click="getdetail( item)">
+              {{ item.name }}
+            </td>
             <td>
               <router-link
                 to="/book_detail"
@@ -204,6 +201,11 @@ export default {
   },
   methods:
           {
+            getdetail (item) {
+              console.log(item)
+              console.log(JSON.stringify(item))
+              this.$router.push({ name: 'Detail', params: item })
+            },
             UpdateStock (bid, stock) {
               if (isNaN(stock)) {
                 alert('库存必须是数字！')
