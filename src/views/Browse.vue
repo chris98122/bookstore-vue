@@ -55,8 +55,7 @@
             <td>
 
               <img
-                :src="
-                item.url"
+                :src="item.url"
                 width="80px">
             </td>
             <td class="text-xs">{{ item.author }}</td>
