@@ -38,8 +38,6 @@
           </v-btn>
         </v-flex>
 
-      </v-flex>
-
       </v-layout>
       <v-flex
         sm12>
@@ -57,15 +55,37 @@
             :key="item.id"
             avatar
           >
-            {{ item.userid }}:{{ item.content }}
+            {{ item.username }}:{{ item.content }}
         </v-list-tile></v-list>
-</v-flex> </v-layout> </v-container></template>
+      </v-flex>
+    </v-layout>
+    <v-layout
+      justify-center>
+      <v-flex
+        sm4 >
+        <v-card>Write your Comment</v-card>
+      </v-flex>
+    </v-layout>
+    <v-flex
+      sm12 >
+      <form >
+        <v-text-field
+          v-model="new_comment"
+          required
+        />
+      </form>
+      <v-btn
+        color="blue"
+        @click="submit">submit</v-btn>
+    </v-flex>
+</v-container></template>
 
 <script>
 export default {
   data: () => ({
     publicPath: process.env.BASE_URL,
     comments: [],
+    new_comment: '',
     url: ''
 
   }),
@@ -131,7 +151,50 @@ export default {
                 })
               })
                 .then(response => {
-                  alert(response.data)
+                })
+                .catch(error => {
+                  JSON.stringify(error)
+                  console.log(error)
+                })
+            },
+            submit () {
+              var url = 'http://localhost:8080/new_comment'
+              console.log(this.$route.params.id)
+              this.axios({
+                headers: {
+                  'Access-Control-Allow-Origin': true,
+                  'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                method: 'post',
+                url: url,
+                data: this.$qs.stringify({
+                  book_id: this.$route.params.id,
+                  content: this.new_comment
+                })
+              })
+                .then(response => {
+                  this.new_comment = ''
+                  var url = 'http://localhost:8080/comment'
+                  this.axios({
+                    headers: {
+                      'Access-Control-Allow-Origin': true,
+                      'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    method: 'post',
+                    url: url,
+                    data: this.$qs.stringify({
+                      book_id: this.$route.params.id
+                    }),
+                    withCredentials: true
+                  })
+                    .then(response => {
+                      this.comments = response.data
+                      console.log(response.data)
+                    })
+                    .catch(error => {
+                      JSON.stringify(error)
+                      console.log(error)
+                    })
                 })
                 .catch(error => {
                   JSON.stringify(error)

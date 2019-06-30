@@ -55,8 +55,9 @@
             <td>
 
               <img
-                :src="item.url"
-                width="80px">
+                :src="cover[item.id-1].url"
+                width="30px"
+              >
             </td>
             <td class="text-xs">{{ item.author }}</td>
             <td class="text-xs">{{ item.stock }}</td>
@@ -134,10 +135,28 @@ export default {
       price: 35,
       url: '1.jpg'
     }
-    ]
+    ],
+    cover: []
   }),
   mounted: function () {
-    var url = 'http://localhost:8080/book'
+    var url = 'http://localhost:8080/get_all_url'
+    this.axios({
+      headers: {
+        'Access-Control-Allow-Origin': true,
+        'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      method: 'get',
+      url: url
+    })
+      .then(response => {
+        this.cover = response.data
+        console.log(response.data)
+      })
+      .catch(error => {
+        JSON.stringify(error)
+        console.log(error)
+      })
+    url = 'http://localhost:8080/book'
     this.axios({
       headers: {
         'Access-Control-Allow-Origin': true,
